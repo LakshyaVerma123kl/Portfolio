@@ -93,13 +93,14 @@ export default function Hero() {
           </p>
           <p className="mt-4">
             During the battle, rebel spies managed to steal secret plans to the
-            Empire's ultimate weapon, the DEATH STAR, an armored space station
-            with enough power to destroy an entire planet's online presence.
+            Empire&aposs ultimate weapon, the DEATH STAR, an armored space
+            station with enough power to destroy an entire planet&aposs online
+            presence.
           </p>
           <p className="mt-4">
-            Pursued by the Empire's sinister agents, Your Name races home aboard
-            their starship, custodian of the stolen plans that can save the
-            people and restore freedom to the internet...
+            Pursued by the Empire&aposs sinister agents, Your Name races home
+            aboard their starship, custodian of the stolen plans that can save
+            the people and restore freedom to the internet...
           </p>
         </div>
       </div>
