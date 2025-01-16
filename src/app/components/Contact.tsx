@@ -35,6 +35,8 @@ export default function Contact() {
       });
 
       const result = await response.json();
+      console.log(result);
+
       if (response.ok) {
         setPopupMessage("Transmission Sent Successfully!");
         setPopupError(false);
