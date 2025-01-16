@@ -47,6 +47,7 @@ export default function Contact() {
       setShowPopup(true);
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
+      console.error("Submission Error:", error);
       setPopupMessage("An error occurred. Please try again.");
       setPopupError(true);
       setShowPopup(true);

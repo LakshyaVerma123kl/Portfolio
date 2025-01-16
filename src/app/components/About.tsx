@@ -16,8 +16,8 @@ export default function About() {
       </h2>
       <div className="max-w-3xl mx-auto text-l">
         <p className="text-lg mb-6">
-          I'm a third-year engineering student with a flair for solving complex
-          problems and a deep love for technology. Specializing in web
+          I&aposm a third-year engineering student with a flair for solving
+          complex problems and a deep love for technology. Specializing in web
           development, I continuously explore new technologies, frameworks, and
           methodologies to build impactful digital solutions.
         </p>
@@ -84,16 +84,16 @@ export default function About() {
           style={{ fontFamily: "Star Jedi" }}
           className="text-3xl text-yellow-300 font-light mb-4"
         >
-          Let's Connect!
+          Let&aposs Connect!
         </h2>
         <p className="text-lg">
-          I'm always open to new opportunities, collaborations, and learning
+          I&aposm always open to new opportunities, collaborations, and learning
           experiences. Whether you want to discuss technology, brainstorm ideas,
           or explore potential collaborations, feel free to reach out.
         </p>
 
         <p className="text-lg font-semibold mt-6">
-          Let's create and innovate together! 🌟
+          Let&aposs create and innovate together! 🌟
         </p>
       </div>
     </motion.section>
