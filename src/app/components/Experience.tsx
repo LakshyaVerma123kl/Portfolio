@@ -48,7 +48,7 @@ export default function Experience() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
-            <h3 className="text-2xl font-bold star-wars-title">{exp.title}</h3>
+            <h3 className="text-2xl font-light star-wars-title">{exp.title}</h3>
             <p className="text-xl text-blue-400">{exp.company}</p>
             <p className="text-gray-400 mb-2">{exp.period}</p>
             <p>{exp.description}</p>

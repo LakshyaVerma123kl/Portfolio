@@ -39,7 +39,7 @@ export default function Skills() {
           >
             <motion.div
               className="w-20 h-20 relative mb-2"
-              whileHover={{ scale: 1.1, rotate: 360 }}
+              whileHover={{ scale: 1.2 }}
               transition={{ duration: 0.3 }}
             >
               <Image

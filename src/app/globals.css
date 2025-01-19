@@ -103,7 +103,7 @@ body {
 .star-wars-title {
   font-family: "Star Jedi", sans-serif;
   color: #e9ecf2;
-  text-shadow: 0 0 5px #f4ee38, 0 0 10px #f4ee38, 0 0 10px #f4ee38;
+  text-shadow: 0 0 5px #f0e914, 0 0 2px #f0e914;
 }
 
 .star-wars {
@@ -116,7 +116,7 @@ body {
   position: relative;
   top: 99999px;
   transform-origin: 50% 100%;
-  animation: crawl 60s linear;
+  animation: crawl 100s linear;
 }
 
 @keyframes crawl {
@@ -223,7 +223,7 @@ body {
 .lightsaber-trail {
   position: fixed;
   pointer-events: none;
-  z-index: 9998;
+  z-index: 9999;
 }
 
 .lightsaber-trail-particle {
@@ -235,4 +235,8 @@ body {
   box-shadow: 0 0 10px #4e8cf0, 0 0 20px #f4ee42, 0 0 30px #f4ee42;
   opacity: 0.7;
   transition: width 0.3s, height 0.3s, opacity 0.3s;
+}
+
+body {
+  cursor: none;
 }
