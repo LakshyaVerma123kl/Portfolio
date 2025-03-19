@@ -51,33 +51,31 @@ export default function About() {
 
           <motion.div variants={sectionVariants}>
             <h3 className="text-3xl text-blue-400 font-bold mb-6 tracking-wide">
-              SKILLS
+              Education
             </h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-[#1F2937]/80 p-5 rounded-lg border-l-2 border-blue-500">
-                <h4 className="font-bold mb-2 flex items-center">
-                  <span className="mr-2">🛠️</span> Frontend
-                </h4>
-                <p>HTML | CSS | JavaScript | React | Tailwind</p>
-              </div>
-              <div className="bg-[#1F2937]/80 p-5 rounded-lg border-l-2 border-blue-500">
-                <h4 className="font-bold mb-2 flex items-center">
-                  <span className="mr-2">⚙️</span> Backend
-                </h4>
-                <p>Node.js | Express.js | Spring Boot | Django | PHP</p>
-              </div>
-              <div className="bg-[#1F2937]/80 p-5 rounded-lg border-l-2 border-blue-500">
-                <h4 className="font-bold mb-2 flex items-center">
-                  <span className="mr-2">🔐</span> Database
-                </h4>
-                <p>MongoDB | MySQL | PostgreSQL</p>
-              </div>
-              <div className="bg-[#1F2937]/80 p-5 rounded-lg border-l-2 border-blue-500">
-                <h4 className="font-bold mb-2 flex items-center">
-                  <span className="mr-2">🔍</span> Others
-                </h4>
-                <p>C/C++ | Java | Python | Data Structures and Algorithms</p>
-              </div>
+            <div className="bg-[#1F2937]/80 rounded-lg p-5 border-r-2 border-blue-500">
+              <h4 className="font-semibold text-xl mb-2">
+                Bachelor of Technology | Information Technology
+              </h4>
+              <p className="text-gray-300 text-sm mb-2">
+                Dr. Akhilesh Das Gupta Institute Of Professional Studies | Delhi
+                | Nov 2022 - July 2026
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li>
+                  Relevant Coursework: Data Structures, Algorithms, Database
+                  Management Systems, Operating Systems, Computer Networks,
+                  Software Engineering
+                </li>
+                <li>
+                  Achievements: Secured a CGPA of 8.5/10, awarded Dean&apos;s
+                  List for academic excellence
+                </li>
+                <li>
+                  Extracurricular: Particpated in Hackthons and Completed 2
+                  internships.
+                </li>
+              </ul>
             </div>
           </motion.div>
 
