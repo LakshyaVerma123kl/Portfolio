@@ -7,6 +7,7 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
+    { name: "Home", href: "#" },
     { name: "About", href: "#about" },
     { name: "Skills", href: "#skills" },
     { name: "Experience", href: "#experience" },
@@ -97,7 +98,7 @@ export default function Navigation() {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium lightsaber-btn blue"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-thin lightsaber-btn blue"
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}

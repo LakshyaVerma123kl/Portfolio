@@ -92,24 +92,16 @@ body {
   }
 }
 
-.lightsaber-cursor {
-  cursor: none;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: screen;
-}
-
 .star-wars-title {
   font-family: "Star Jedi", sans-serif;
   color: #e9ecf2;
-  text-shadow: 0 0 5px #f0e914, 0 0 2px #f0e914;
+  text-shadow: 0 0 4px #1477f0, 0 0 2px #1468f0;
 }
 
 .star-wars {
   font-family: "Star Jedi", sans-serif;
   color: #e4dd07;
-  box-shadow: 0 0 5px #f4ee42, 0 0 10px #f4ee42, 0 0 20px #f4ee42;
+  box-shadow: 0 0 5px #42c7f4, 0 0 10px #42c7f4, 0 0 20px #42f4f4;
 }
 
 .crawl-text {
@@ -235,8 +227,4 @@ body {
   box-shadow: 0 0 10px #4e8cf0, 0 0 20px #f4ee42, 0 0 30px #f4ee42;
   opacity: 0.7;
   transition: width 0.3s, height 0.3s, opacity 0.3s;
-}
-
-body {
-  cursor: none;
 }

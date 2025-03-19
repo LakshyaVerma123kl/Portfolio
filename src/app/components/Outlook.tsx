@@ -21,11 +21,11 @@ export default function Outlook() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="bg-gray-800 p-8 rounded-lg shadow-lg"
+          className="bg-[#1F2937]/80 p-8 rounded-lg shadow-lg border-l-2 border-blue-500"
         >
           <h3
             style={{ fontFamily: "Star Jedi" }}
-            className="text-2xl font-bold mb-6 text-center text-yellow-400"
+            className="text-2xl font-semibold mb-6 text-center text-blue-400"
           >
             My Jedi Path
           </h3>
