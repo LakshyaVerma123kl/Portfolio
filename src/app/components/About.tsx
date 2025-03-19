@@ -41,7 +41,7 @@ export default function About() {
             variants={sectionVariants}
           >
             <p className="mb-6">
-              I'm a third-year engineering student with a flair for solving
+              I m a third-year engineering student with a flair for solving
               complex problems and a deep love for technology. Specializing in
               web development, I continuously explore new technologies,
               frameworks, and methodologies to build impactful digital
@@ -134,17 +134,17 @@ export default function About() {
               className="text-3xl text-blue-400 font-bold
               mb-6 tracking-wide"
             >
-              Let's Connect!
+              Let s Connect!
             </h3>
             <div className="bg-[#1F2937]/80 p-6 rounded-lg border-t-2 border-blue-500">
               <p className="text-lg mb-4">
-                I'm always open to new opportunities, collaborations, and
+                I m always open to new opportunities, collaborations, and
                 learning experiences. Whether you want to discuss technology,
                 brainstorm ideas, or explore potential collaborations, feel free
                 to reach out.
               </p>
               <p className="text-xl font-semibold mt-6 text-blue-400">
-                Let's create and innovate together! 🌟
+                Let s create and innovate together! 🌟
               </p>
             </div>
           </motion.div>
