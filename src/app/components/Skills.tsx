@@ -62,9 +62,9 @@ export default function Skills() {
     logo,
     level,
   }: {
-    name: any;
-    logo: any;
-    level: any;
+    name: string;
+    logo: string;
+    level: string;
   }) => (
     <motion.div
       className="bg-[#1F2937]/80 rounded-lg p-4 flex flex-col border border-[#3B82F6]/40 shadow-lg shadow-[#3B82F6]/20 hover:shadow-[#3B82F6]/50 transition-all duration-300 transform hover:-translate-y-1"
