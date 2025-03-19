@@ -88,8 +88,8 @@ export default function Projects() {
                 src={project.image || "/placeholder.svg"}
                 alt={project.title}
                 layout="fill"
-                objectFit="cover"
-                className="hover:scale-105 transition-transform duration-300"
+                // objectFit="cover"
+                className="hover:scale-105 object-fill transition-transform duration-300"
               />
               <div className="absolute inset-0 bg-[#3B82F6]/10 hover:bg-[#3B82F6]/20 transition-all duration-300" />
             </div>
