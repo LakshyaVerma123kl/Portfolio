@@ -1,44 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
-
-// Expanded skills data with categories from resume
-const skillsData = {
-  programming: [
-    { name: "C++", logo: "/c.svg", level: 90 },
-    { name: "JavaScript", logo: "/javascript.svg", level: 95 },
-    { name: "TypeScript", logo: "/typescript.svg", level: 85 },
-    { name: "Python", logo: "/python.svg", level: 80 },
-    { name: "Java", logo: "/java.svg", level: 75 },
-    { name: "C", logo: "/c.svg", level: 85 },
-  ],
-  frontend: [
-    { name: "React", logo: "/react.svg", level: 90 },
-    { name: "HTML/CSS", logo: "/html.svg", level: 95 },
-  ],
-  backend: [
-    { name: "Node.js", logo: "/node2.svg", level: 88 },
-    { name: "Express.js", logo: "/express.svg", level: 85 },
-    { name: "NEST", logo: "/nest.svg", level: 80 },
-    { name: "Django", logo: "/django.svg", level: 75 },
-    { name: "Flask", logo: "/flask.svg", level: 70 },
-    { name: "Spring Boot", logo: "/spring.svg", level: 75 },
-  ],
-  databases: [
-    { name: "MongoDB", logo: "/mongodb.svg", level: 85 },
-    { name: "MySQL", logo: "/mysql.svg", level: 90 },
-    { name: "PostgreSQL", logo: "/postgres.svg", level: 80 },
-    { name: "Redis", logo: "/redis.svg", level: 75 },
-  ],
-  tools: [
-    { name: "Git", logo: "/git.svg", level: 90 },
-    { name: "VS Code", logo: "/vscode.svg", level: 95 },
-    { name: "IntelliJ", logo: "/intellij.svg", level: 85 },
-    { name: "Postman", logo: "/postman.svg", level: 88 },
-    { name: "Kafka", logo: "/kafka.svg", level: 75 },
-  ],
-};
 
 export default function Skills() {
   const containerVariants = {
@@ -55,40 +17,6 @@ export default function Skills() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
-
-  // Function to render skill progress bar
-  const SkillBar = ({
-    name,
-    logo,
-    level,
-  }: {
-    name: any;
-    logo: any;
-    level: any;
-  }) => (
-    <motion.div
-      className="bg-[#1F2937]/80 rounded-lg p-4 flex flex-col"
-      variants={itemVariants}
-    >
-      <div className="flex items-center mb-3">
-        <div className="w-8 h-8 relative mr-3">
-          <Image
-            src={logo || "/placeholder.svg"}
-            alt={`${name} logo`}
-            layout="fill"
-            objectFit="contain"
-          />
-        </div>
-        <h3 className="font-medium text-white">{name}</h3>
-      </div>
-      <div className="w-full bg-gray-700 rounded-full h-2.5">
-        <div
-          className="bg-blue-500 h-2.5 rounded-full"
-          style={{ width: `${level}%` }}
-        ></div>
-      </div>
-    </motion.div>
-  );
 
   return (
     <section id="experience" className="py-16 px-4">
