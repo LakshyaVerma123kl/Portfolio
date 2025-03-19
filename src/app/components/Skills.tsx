@@ -67,7 +67,7 @@ export default function Skills() {
     level: number;
   }) => (
     <motion.div
-      className="bg-[#1F2937]/80 rounded-lg p-4 flex flex-col border border-[#3B82F6]/40 shadow-lg shadow-[#3B82F6]/20 hover:shadow-[#3B82F6]/50 transition-all duration-300 transform hover:-translate-y-1"
+      className="bg-[#1F2937]/80 rounded-lg p-4 flex flex-col border border-[#3B82F6]/40 shadow-lg shadow-[#3B82F6]/20 hover:shadow-[#3B82F6]/40 transition-all duration-200 transform hover:-translate-y-1"
       variants={itemVariants}
     >
       <div className="flex items-center mb-3">
@@ -83,7 +83,7 @@ export default function Skills() {
       </div>
       <div className="w-full bg-gray-700 rounded-full h-2.5">
         <div
-          className="bg-blue-500/60 h-2.5 rounded-full"
+          className="bg-blue-400 h-2.5 rounded-full"
           style={{ width: `${level}%` }}
         ></div>
       </div>
