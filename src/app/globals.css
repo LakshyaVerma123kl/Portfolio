@@ -19,13 +19,19 @@ body {
   overflow-x: hidden;
   font-family: "Arial", sans-serif;
 }
-
 .star-wars-bg {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background: radial-gradient(
+    circle at center,
+    #1a1a2e 0%,
+    #0d0d1b 70%,
+    #000000 100%
+  );
+  overflow: hidden;
   z-index: -1;
 }
 
@@ -33,75 +39,146 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
+  transition: transform 0.1s ease-out;
 }
 
 .star {
   position: absolute;
   border-radius: 50%;
-  animation: twinkle 5s infinite;
-}
-
-.star-bright {
-  background-color: #fff;
-  box-shadow: 0 0 4px #fff, 0 0 8px #fff;
+  opacity: 0.8;
+  animation: twinkle 2s infinite ease-in-out;
 }
 
 .star-dim {
-  background-color: rgba(255, 255, 255, 0.5);
+  background: #ffffff;
+  opacity: 0.3;
 }
 
-.star-red {
-  background-color: #ff8080;
+.star-bright {
+  background: #e5e7eb;
+  opacity: 0.7;
 }
 
-.star-blue {
-  background-color: #8080ff;
+.star-glow {
+  background: #dbeafe;
+  box-shadow: 0 0 10px rgba(219, 234, 254, 0.8);
+  opacity: 1;
+}
+
+/* .shooting-star {
+  position: absolute;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ffffff, transparent);
+  animation: shoot 0.8s infinite;
+  opacity: 0;
+} */
+
+.nebula {
+  position: absolute;
+  width: 80%;
+  height: 60%; /* Elliptical, not square */
+  top: 20%;
+  left: 10%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(26, 26, 46, 0.5) 0%,
+    rgba(96, 165, 250, 0.15) 60%,
+    transparent 80%
+  );
+  filter: blur(70px); /* Soft, deep fade */
+  opacity: 0.6;
+  animation: orbit 25s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes orbit {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(15px, -10px) rotate(3deg);
+  }
+  50% {
+    transform: translate(0, -15px) rotate(0deg);
+  }
+  75% {
+    transform: translate(-15px, 10px) rotate(-3deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+.lightsaber-trail-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #60a5fa;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #60a5fa;
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
 }
 
 @keyframes twinkle {
   0%,
   100% {
-    opacity: 1;
+    opacity: 0.8;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.4;
   }
 }
 
 .shooting-star {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  animation: shoot 3s linear infinite;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.5),
+    0 0 10px rgba(255, 255, 255, 0.3), 0 0 25px rgba(255, 255, 255, 0.8);
+  animation: shoot ease-in-out infinite;
+  opacity: 0; /* Default off-screen */
+}
+
+.shooting-star::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 250px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), transparent);
+  filter: blur(0.5px);
 }
 
 @keyframes shoot {
-  from {
-    transform: translateX(-100px) translateY(0) rotate(45deg);
+  0% {
+    transform: rotate(var(--start-angle)) translateX(100px); /* Start off-screen right */
+    opacity: 0;
+  }
+  10% {
+    transform: rotate(var(--start-angle)) translateX(0); /* Fade in at edge */
     opacity: 1;
   }
-  to {
-    transform: translateX(calc(100vw + 100px)) translateY(100px) rotate(45deg);
+  50% {
+    transform: rotate(var(--start-angle)) translateX(-500px);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--start-angle)) translateX(-1000px);
     opacity: 0;
   }
 }
 
 .star-wars-title {
-  font-family: "Star Jedi", sans-serif;
-  color: #e9ecf2;
-  text-shadow: 0 0 4px #1477f0, 0 0 2px #1468f0;
+  font-family: "Star Jedi", sans-serif; /* Assuming you have this font */
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
 }
 
-.star-wars {
-  font-family: "Star Jedi", sans-serif;
-  color: #e4dd07;
-  box-shadow: 0 0 5px #42b3f4, 0 0 10px #42adf4, 0 0 20px #42b9f4;
+.star-wars-title:hover {
+  text-shadow: 0 0 8px rgba(219, 234, 254, 0.8);
 }
 
 .crawl-text {
@@ -124,10 +201,8 @@ body {
 
 .lightsaber-btn {
   position: relative;
-  background-color: #000;
   color: #fff;
   padding: 10px 20px;
-  border: none;
   cursor: pointer;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -154,7 +229,7 @@ body {
 }
 
 .lightsaber-btn.blue:hover {
-  box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;
+  box-shadow: 0 0 10px #3b82f6, 0 0 15px #3b82f6, 0 0 20px #3b82f6;
 }
 
 .lightsaber-btn.green:hover {
@@ -170,20 +245,29 @@ body {
 }
 
 @keyframes float {
-  0% {
-    transform: translateY(0px);
+  0%,
+  100% {
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-20px);
-  }
-  100% {
-    transform: translateY(0px);
+    transform: translateY(-10px);
   }
 }
 
-.hologram {
-  position: relative;
-  overflow: hidden;
+.animate-hum {
+  animation: hum 8s ease-in-out infinite;
+}
+
+@keyframes hum {
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.05);
+  }
 }
 
 .hologram::before {

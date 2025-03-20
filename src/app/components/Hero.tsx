@@ -11,6 +11,8 @@ export default function Hero() {
       transition={{ duration: 1 }}
       className="min-h-screen flex flex-col justify-center max-sm:justify-start max-sm:pt-14 items-center text-center relative overflow-hidden"
     >
+      <div className="absolute inset-0 bg-[#1a1a2e]/20 pointer-events-none" />{" "}
+      {/* Faint tint */}
       <div className="z-10 max-sm:space-y-10">
         <motion.div
           className="mb-10 relative group"
@@ -26,22 +28,24 @@ export default function Hero() {
               alt="Lakshya Kumar Singh"
               loading="lazy"
               fill
-              className="rounded-full object-cover shadow-lg shadow-[#42f4ee]/50 group-hover:shadow-[#42f4ee]/80 transition-all duration-300 star-wars force-float"
+              className="rounded-full object-cover shadow-lg shadow-[#60a5fa]/50 group-hover:shadow-[#60a5fa]/80 transition-all duration-300 star-wars force-float"
             />
-            <div className="absolute inset-0 rounded-full hologram pointer-events-none group-hover:bg-[#42f4ee]/10 transition-all duration-300" />
-            <div className="absolute inset-0 rounded-full bg-[#42f4ee]/5 opacity-50 animate-pulse" />
+            <div className="absolute inset-0 rounded-full bg-[#60a5fa]/5 opacity-50 animate-pulse" />
           </div>
         </motion.div>
-        <motion.h1
-          className="text-5xl max-sm:text-4xl md:text-7xl font-bold mb-4 star-wars-title"
+        <motion.div
+          className="relative"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          LAKSHYA KUMAR SINGH
-        </motion.h1>
+          <div className="absolute inset-0 -top-4 -z-10 bg-[#60a5fa]/10 filter blur-[60px] animate-hum" />
+          <h1 className="text-5xl max-sm:text-4xl md:text-7xl font-bold mb-4 star-wars-title text-[#dbeafe] drop-shadow-[0_0_8px_rgba(219,234,254,0.8)]">
+            LAKSHYA KUMAR SINGH
+          </h1>
+        </motion.div>
         <motion.p
-          className="text-4xl text-blue-400 max-sm:text-xl md:text-2xl mb-8"
+          className="text-4xl max-sm:text-xl md:text-2xl mb-8 text-[#60a5fa]"
           style={{ fontFamily: "Star Jedi" }}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -58,7 +62,7 @@ export default function Hero() {
         >
           <motion.a
             href="#contact"
-            className="bg-gray-800 hover:bg-gray-700 star-wars text-white font-light py-2 px-4 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105 lightsaber-btn blue"
+            className="px-6 py-2.5 text-white font-medium bg-black/20 border border-[#3B82F6]/50 rounded-full lightsaber-btn shadow-lg shadow-[#3B82F6]/30"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -67,7 +71,7 @@ export default function Hero() {
           <motion.a
             href="https://github.com/Lakshya-249"
             target="_blank"
-            className="bg-gray-800 hover:bg-gray-700 star-wars text-white font-light py-2 px-4 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105 lightsaber-btn blue"
+            className="px-6 py-2.5 text-white font-medium bg-black/20 border border-[#3B82F6]/50 rounded-full lightsaber-btn shadow-lg shadow-[#3B82F6]/30"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -76,7 +80,7 @@ export default function Hero() {
           <motion.a
             href="https://www.linkedin.com/in/lakshya-kumar-singh-b52839263/"
             target="_blank"
-            className="bg-gray-800 hover:bg-gray-700 star-wars max-sm:mt-6 text-white font-light py-2 px-4 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105 lightsaber-btn blue"
+            className="px-6 py-2.5 text-white font-medium bg-black/20 border max-sm:mt-5 border-[#3B82F6]/50 rounded-full lightsaber-btn shadow-lg shadow-[#3B82F6]/30"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

@@ -21,7 +21,7 @@ export default function RootLayout({
     if (!cursor || !stars) return;
 
     const trail: HTMLDivElement[] = [];
-    const trailLength = 20;
+    const trailLength = 15; // Slightly shorter trail for sleekness
 
     const handleMouseMove = (e: MouseEvent) => {
       cursor.style.left = `${e.clientX}px`;
@@ -30,7 +30,8 @@ export default function RootLayout({
       const x = e.clientX / window.innerWidth;
       const y = e.clientY / window.innerHeight;
 
-      stars.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
+      // Subtle parallax, less jittery
+      stars.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
 
       const trailParticle = document.createElement("div");
       trailParticle.className = "lightsaber-trail-particle";
@@ -42,38 +43,55 @@ export default function RootLayout({
       if (trail.length > trailLength) {
         const oldestParticle = trail.shift();
         if (oldestParticle) {
-          oldestParticle.style.width = "0px";
-          oldestParticle.style.height = "0px";
           oldestParticle.style.opacity = "0";
-          setTimeout(() => oldestParticle.remove(), 300);
+          setTimeout(() => oldestParticle.remove(), 200); // Faster fade
         }
       }
     };
 
     const createStars = () => {
-      const starTypes = ["star-bright", "star-dim", "star-red", "star-blue"];
-      for (let i = 0; i < 2000; i++) {
-        const star = document.createElement("div");
-        star.className = `star ${
-          starTypes[Math.floor(Math.random() * starTypes.length)]
-        }`;
-        star.style.width = `${Math.random() * 3}px`;
-        star.style.height = star.style.width;
-        star.style.left = `${Math.random() * 100}%`;
-        star.style.top = `${Math.random() * 100}%`;
-        star.style.animationDelay = `${Math.random() * 5}s`;
-        stars.appendChild(star);
-      }
+      // Existing star layers...
+      const layers = [
+        { count: 300, size: 1, class: "star-dim", depth: 0.5 },
+        { count: 150, size: 2, class: "star-bright", depth: 1 },
+        { count: 55, size: 3, class: "star-glow", depth: 1.5 },
+      ];
+
+      layers.forEach((layer) => {
+        for (let i = 0; i < layer.count; i++) {
+          const star = document.createElement("div");
+          star.className = `star ${layer.class}`;
+          const size = Math.random() * layer.size + 1;
+          star.style.width = `${size}px`;
+          star.style.height = `${size}px`;
+          star.style.left = `${Math.random() * 100}%`;
+          star.style.top = `${Math.random() * 100}%`;
+          star.style.transform = `scale(${layer.depth})`;
+          star.style.animationDelay = `${Math.random() * 3}s`;
+          stars.appendChild(star);
+        }
+      });
+
+      const nebula = document.createElement("div");
+      nebula.className = "nebula";
+      stars.appendChild(nebula);
     };
 
     const createShootingStars = () => {
-      for (let i = 0; i < 120; i++) {
+      for (let i = 0; i < 10; i++) {
         const shootingStar = document.createElement("div");
         shootingStar.className = "shooting-star";
-        shootingStar.style.left = `${Math.random() * 100}%`;
-        shootingStar.style.top = `${Math.random() * 100}%`;
-        shootingStar.style.animationDelay = `${Math.random() * 10}s`;
-        stars.appendChild(shootingStar);
+        shootingStar.style.top = `${Math.random() * 80}%`;
+        shootingStar.style.right = `${Math.random() * 100}%`;
+        const size = 3 + Math.random() * 3; // 3-6px
+        shootingStar.style.width = `${size}px`;
+        shootingStar.style.height = `${size}px`;
+        const angle = 310 + Math.random() * 10; // 310-320deg
+        shootingStar.style.setProperty("--start-angle", `${angle}deg`);
+        shootingStar.style.animationDelay = `${Math.random() * 10 + i * 2}s`; // 0-25s
+        shootingStar.style.animationDuration = `${4 + Math.random() * 2}s`; // 4-6s
+        shootingStar.style.opacity = "0"; // Start invisible
+        starsRef.current?.appendChild(shootingStar);
       }
     };
 
@@ -97,11 +115,11 @@ export default function RootLayout({
           ref={cursorRef}
           className="lightsaber-cursor"
           style={{
-            width: "4px",
-            height: "20px",
-            backgroundColor: "#3b82f6",
-            boxShadow:
-              "0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6, 0 0 40px #3b82f6",
+            width: "3px", // Slimmer, sharper
+            height: "25px",
+            background: "linear-gradient(180deg, #60a5fa, #1e3a8a)", // Gradient for depth
+            boxShadow: "0 0 8px #60a5fa, 0 0 15px #60a5fa, 0 0 25px #1e3a8a",
+            borderRadius: "2px",
           }}
         ></div>
         <Navigation />

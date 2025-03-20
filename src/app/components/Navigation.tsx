@@ -1,10 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50); // Trigger at 50px scroll
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navItems = [
     { name: "Home", href: "#" },
@@ -16,11 +26,20 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-md">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-black/20 backdrop-blur-sm"
+          : "bg-gradient-to-b from-[#1a1a2e]/80 to-transparent"
+      }`}
+    >
       <div className="px-4 max-sm:px-6">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <a href="#" className="star-wars-title text-2xl">
+            <a
+              href="#"
+              className="star-wars-title text-2xl text-[#dbeafe] drop-shadow-[0_0_8px_rgba(219,234,254,0.8)]"
+            >
               Portfolio
             </a>
           </div>
@@ -33,7 +52,7 @@ export default function Navigation() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-light lightsaber-btn blue"
+                  className="text-[#dbeafe] hover:bg-[#1e3a8a]/50 hover:text-white px-3 py-2 rounded-md text-sm font-light lightsaber-btn blue transition-all duration-200"
                 >
                   {item.name}
                 </a>
@@ -43,7 +62,7 @@ export default function Navigation() {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+              className="inline-flex items-center justify-center p-2 rounded-md text-[#dbeafe] hover:text-white hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1a1a2e] focus:ring-[#60a5fa]"
             >
               <span className="sr-only">Open main menu</span>
               {isOpen ? (
@@ -67,7 +86,7 @@ export default function Navigation() {
                   className="block h-6 w-6"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
-                  viewBox="0 0 24 24"
+                  viewBox="0_0_24_24"
                   stroke="currentColor"
                   aria-hidden="true"
                 >
@@ -85,7 +104,7 @@ export default function Navigation() {
       </div>
       {isOpen && (
         <motion.div
-          className="md:hidden"
+          className="md:hidden bg-black/20"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -98,7 +117,7 @@ export default function Navigation() {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-thin lightsaber-btn blue"
+                className="text-[#dbeafe] hover:bg-[#1e3a8a]/50 hover:text-white block px-3 py-2 rounded-md text-base font-thin lightsaber-btn blue transition-all duration-200"
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
