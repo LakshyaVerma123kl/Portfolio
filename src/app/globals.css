@@ -110,17 +110,6 @@ body {
   }
 }
 
-.lightsaber-trail-particle {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: #60a5fa;
-  border-radius: 50%;
-  box-shadow: 0 0 5px #60a5fa;
-  transition: opacity 0.2s ease-out;
-  pointer-events: none;
-}
-
 @keyframes twinkle {
   0%,
   100% {
@@ -304,8 +293,8 @@ body {
 
 .lightsaber-trail-particle {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 3px;
+  height: 4px;
   border-radius: 50%;
   background-color: #3376e1;
   box-shadow: 0 0 10px #4e8cf0, 0 0 20px #f4ee42, 0 0 30px #f4ee42;
