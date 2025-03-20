@@ -11,7 +11,7 @@ export default function Hero() {
       transition={{ duration: 1 }}
       className="min-h-screen flex flex-col justify-center max-sm:justify-start max-sm:pt-14 items-center text-center relative overflow-hidden"
     >
-      <div className="absolute inset-0 bg-[#1a1a2e]/20 pointer-events-none" />{" "}
+      {/* <div className="absolute inset-0 bg-[#1a1a2e]/20 pointer-events-none" />{" "} */}
       {/* Faint tint */}
       <div className="z-10 max-sm:space-y-10">
         <motion.div
@@ -30,7 +30,7 @@ export default function Hero() {
               fill
               className="rounded-full object-cover shadow-lg shadow-[#60a5fa]/50 group-hover:shadow-[#60a5fa]/80 transition-all duration-300 star-wars force-float"
             />
-            <div className="absolute inset-0 rounded-full bg-[#60a5fa]/5 opacity-50 animate-pulse" />
+            <div className="absolute inset-0 rounded-full bg-[#60a5fa]/5 opacity-50" />
           </div>
         </motion.div>
         <motion.div
