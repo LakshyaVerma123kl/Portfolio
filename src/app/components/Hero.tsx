@@ -40,7 +40,7 @@ export default function Hero() {
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           <div className="absolute inset-0 -top-4 -z-10 bg-[#60a5fa]/10 filter blur-[60px] animate-hum" />
-          <h1 className="text-5xl max-sm:text-4xl md:text-7xl font-bold mb-4 star-wars-title text-[#dbeafe] drop-shadow-[0_0_8px_rgba(219,234,254,0.8)]">
+          <h1 className="text-5xl max-sm:text-4xl md:text-7xl font-bold mb-4 star-wars-title">
             LAKSHYA KUMAR SINGH
           </h1>
         </motion.div>

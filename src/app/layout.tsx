@@ -14,8 +14,10 @@ export default function RootLayout({
 }) {
   const cursorRef = useRef<HTMLDivElement>(null);
   const starsRef = useRef<HTMLDivElement>(null);
+  const starFieldRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const starField = starFieldRef.current;
     const cursor = cursorRef.current;
     const stars = starsRef.current;
     if (!cursor || !stars) return;
@@ -94,6 +96,17 @@ export default function RootLayout({
         starsRef.current?.appendChild(shootingStar);
       }
     };
+    // Create the star field layers dynamically
+    const createStarField = () => {
+      const layers = 3;
+      for (let i = 1; i <= layers; i++) {
+        const layer = document.createElement("div");
+        layer.className = `layer layer-${i}`;
+        starField?.appendChild(layer);
+      }
+    };
+
+    createStarField();
 
     createStars();
     createShootingStars();
@@ -110,6 +123,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="star-wars-bg">
           <div ref={starsRef} className="parallax-stars"></div>
+          <div ref={starFieldRef} className="star-field"></div>
         </div>
         <div
           ref={cursorRef}
