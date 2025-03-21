@@ -112,7 +112,8 @@ export default function Contact() {
         </div>
         <motion.button
           type="submit"
-          className="w-full py-2.5 text-white font-medium bg-black/20 border star-wars-title border-[#3B82F6]/50 rounded-xl lightsaber-btn shadow-lg shadow-[#3B82F6]/30"
+          style={{ fontFamily: "Star Jedi" }}
+          className="w-full py-2.5 text-white font-medium bg-black/20 border border-[#3B82F6]/50 rounded-xl lightsaber-btn shadow-lg shadow-[#3B82F6]/30"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           disabled={isSending}
