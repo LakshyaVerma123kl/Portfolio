@@ -13,7 +13,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="container mx-auto px-4 py-8 pt-20">
+    <main className="container mx-auto px-4 py-8 pt-15 max-sm:pt-20">
       <Hero />
       <About />
       <Skills />

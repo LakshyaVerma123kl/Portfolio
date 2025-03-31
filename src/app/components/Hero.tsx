@@ -22,11 +22,12 @@ export default function Hero() {
           whileTap={{ scale: 0.95 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <div className="relative w-[220px] h-[220px] mx-auto">
+          <div className="relative w-[250px] h-[250px] max-sm:w-[220px] max-sm:h-[220px] mx-auto">
             <Image
               src="/lakshya_pic.png"
               alt="Lakshya Kumar Singh"
               loading="lazy"
+              decoding="async"
               fill
               className="rounded-full object-cover shadow-lg shadow-[#60a5fa]/50 group-hover:shadow-[#60a5fa]/80 transition-all duration-300 star-wars force-float"
             />
