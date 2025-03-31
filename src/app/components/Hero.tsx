@@ -24,7 +24,7 @@ export default function Hero() {
         >
           <div className="relative w-[220px] h-[220px] mx-auto">
             <Image
-              src="/Lakshya-photo.jpg"
+              src="/lakshya_pic.png"
               alt="Lakshya Kumar Singh"
               loading="lazy"
               fill
