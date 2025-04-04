@@ -24,7 +24,7 @@ export default function Hero() {
         >
           <div className="relative w-[250px] h-[250px] max-sm:w-[220px] max-sm:h-[220px] mx-auto">
             <Image
-              src="/lakshya_pic.png"
+              src="/lakshya_pic.jpg"
               alt="Lakshya Kumar Singh"
               loading="lazy"
               decoding="async"
