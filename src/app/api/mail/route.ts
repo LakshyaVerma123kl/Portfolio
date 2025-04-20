@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER, // Send to yourself
+      to: process.env.EMAIL_USER,
       subject: `New Message from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
     };
@@ -26,8 +26,7 @@ export async function POST(req: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.log("Error occured: ", error);
-
+    console.log("Error occurred: ", error);
     return NextResponse.json(
       { error: "Failed to send email" },
       { status: 500 }

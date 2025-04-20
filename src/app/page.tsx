@@ -1,24 +1,21 @@
 import Hero from "./components/Hero";
+import Navigation from "./components/Navigation";
+import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Experience from "./components/Experience";
-import Projects from "./components/Projects";
-import Outlook from "./components/Outlook";
 import Contact from "./components/Contact";
 import About from "./components/About";
-
-export const metadata = {
-  title: "Lakshya Portfolio",
-  description: "A modern portfolio with star wars theme.",
-};
+import Outlook from "./components/Outlook";
 
 export default function Home() {
   return (
-    <main className="container mx-auto px-4 py-8 pt-15 max-sm:pt-20">
+    <main className="relative z-10">
       <Hero />
+      <Navigation />
       <About />
       <Skills />
-      <Experience />
       <Projects />
+      <Experience />
       <Outlook />
       <Contact />
     </main>

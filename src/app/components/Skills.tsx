@@ -3,41 +3,85 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-// Expanded skills data with categories from resume
-const skillsData = {
+interface Skill {
+  name: string;
+  level: number;
+}
+
+interface SkillsData {
+  programming: Skill[];
+  frontend: Skill[];
+  backend: Skill[];
+  databases: Skill[];
+  tools: Skill[];
+}
+
+const skillsData: SkillsData = {
   programming: [
-    { name: "C++", logo: "/c.svg", level: 90 },
-    { name: "JavaScript", logo: "/javascript.svg", level: 95 },
-    { name: "TypeScript", logo: "/typescript.svg", level: 85 },
-    { name: "Python", logo: "/python.svg", level: 80 },
-    { name: "Java", logo: "/java.svg", level: 75 },
-    { name: "C", logo: "/c.svg", level: 85 },
+    { name: "JavaScript", level: 90 },
+    { name: "TypeScript", level: 85 },
+    { name: "Python", level: 80 },
+    { name: "Java", level: 75 },
+    { name: "C++", level: 70 },
   ],
   frontend: [
-    { name: "React", logo: "/react.svg", level: 90 },
-    { name: "HTML/CSS", logo: "/html.svg", level: 95 },
+    { name: "React", level: 90 },
+    { name: "Next.js", level: 80 },
+    { name: "Tailwind CSS", level: 85 },
+    { name: "Chart.js", level: 75 },
+    { name: "Redux", level: 70 },
   ],
   backend: [
-    { name: "Node.js", logo: "/node2.svg", level: 88 },
-    { name: "Express.js", logo: "/express.svg", level: 85 },
-    { name: "NEST", logo: "/nest.svg", level: 80 },
-    { name: "Django", logo: "/django.svg", level: 75 },
-    { name: "Flask", logo: "/flask.svg", level: 70 },
-    { name: "Spring Boot", logo: "/spring.svg", level: 75 },
+    { name: "Node.js", level: 85 },
+    { name: "Express.js", level: 80 },
+    { name: "Django", level: 75 },
+    { name: "Flask", level: 70 },
+    { name: "FastAPI", level: 70 },
+    { name: "Spring Boot", level: 65 },
   ],
   databases: [
-    { name: "MongoDB", logo: "/mongodb.svg", level: 85 },
-    { name: "MySQL", logo: "/mysql.svg", level: 90 },
-    { name: "PostgreSQL", logo: "/postgres.svg", level: 80 },
-    { name: "Redis", logo: "/redis.svg", level: 75 },
+    { name: "MongoDB", level: 85 },
+    { name: "PostgreSQL", level: 80 },
+    { name: "MySQL", level: 75 },
+    { name: "Firebase", level: 70 },
   ],
   tools: [
-    { name: "Git", logo: "/git.svg", level: 90 },
-    { name: "VS Code", logo: "/vscode.svg", level: 95 },
-    { name: "IntelliJ", logo: "/intellij.svg", level: 85 },
-    { name: "Postman", logo: "/postman.svg", level: 88 },
-    { name: "Kafka", logo: "/kafka.svg", level: 75 },
+    { name: "Git", level: 90 },
+    { name: "Docker", level: 80 },
+    { name: "AWS", level: 70 },
+    { name: "Netlify", level: 75 },
+    { name: "Vercel", level: 75 },
+    { name: "Heroku", level: 70 },
   ],
+};
+
+const iconFileMap: { [key: string]: string } = {
+  JavaScript: "javascript.svg",
+  TypeScript: "typescript.svg",
+  Python: "python.svg",
+  Java: "java.svg",
+  "C++": "cpp.svg",
+  React: "react.svg",
+  "Next.js": "nextdotjs.svg",
+  "Tailwind CSS": "tailwindcss.svg",
+  "Chart.js": "chartdotjs.svg",
+  Redux: "redux.svg",
+  "Node.js": "node2.svg",
+  "Express.js": "express.svg",
+  Django: "django.svg",
+  Flask: "flask.svg",
+  FastAPI: "fastapi.svg",
+  "Spring Boot": "spring.svg",
+  MongoDB: "mongodb.svg",
+  PostgreSQL: "postgresql.svg",
+  MySQL: "mysql.svg",
+  Firebase: "firebase.svg",
+  Git: "git.svg",
+  Docker: "docker.svg",
+  AWS: "aws.svg",
+  Netlify: "netlify.svg",
+  Vercel: "vercel.svg",
+  Heroku: "heroku.svg",
 };
 
 export default function Skills() {
@@ -45,74 +89,69 @@ export default function Skills() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.15 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
-  // Function to render skill progress bar
-  const SkillBar = ({
-    name,
-    logo,
-    level,
-  }: {
-    name: string;
-    logo: string;
-    level: number;
-  }) => (
-    <motion.div
-      className="bg-[#1F2937]/80 rounded-lg p-4 flex flex-col border border-[#3B82F6]/40 shadow-lg shadow-[#3B82F6]/20 hover:shadow-[#3B82F6]/40 transition-all duration-200 transform hover:-translate-y-1"
-      variants={itemVariants}
-    >
-      <div className="flex items-center mb-3">
-        <div className="w-8 h-8 relative mr-3">
+  const SkillBar = ({ name, level }: Skill) => {
+    const iconFilename = iconFileMap[name] || "fallback.svg";
+    const iconPath = `/${iconFilename}`;
+
+    return (
+      <motion.div
+        className="relative bg-[#1F2937]/80 rounded-lg p-3 flex items-center h-20 border border-blue-500/20 shadow-md shadow-blue-500/10 hover:shadow-blue-500/30 transition-all duration-300 force-float"
+        variants={itemVariants}
+        whileHover={{ scale: 1.03 }}
+      >
+        <div className="w-6 h-6 relative mr-2 flex-shrink-0">
           <Image
-            src={logo || "/placeholder.svg"}
-            alt={`${name} logo`}
-            layout="fill"
-            objectFit="contain"
+            src={iconPath}
+            alt={`${name} icon`}
+            width={24}
+            height={24}
+            style={{ width: "auto", height: "auto" }}
+            className="object-contain"
           />
         </div>
-        <h3 className="font-medium text-white">{name}</h3>
-      </div>
-      <div className="w-full bg-gray-700 rounded-full h-2.5">
-        <div
-          className="bg-blue-400 h-2.5 rounded-full"
-          style={{ width: `${level}%` }}
-        ></div>
-      </div>
-    </motion.div>
-  );
+        <div className="flex-1 min-w-0">
+          <h3 className="font-medium text-white text-sm truncate">{name}</h3>
+          <div className="w-full bg-gray-800/50 rounded-full h-1.5 mt-1">
+            <motion.div
+              className="bg-blue-400 h-1.5 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${level}%` }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+            ></motion.div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
 
   return (
-    <section id="skills" className="py-16 px-4">
-      <div className="max-w-6xl mx-auto">
+    <section id="skills" className="py-16 px-4 bg-transparent relative z-10">
+      <div className="max-w-5xl mx-auto">
         <motion.h2
-          className="text-4xl font-extrabold mb-12 text-center tracking-wider"
-          initial={{ opacity: 0, y: -20 }}
+          className="text-4xl font-bold mb-10 text-center star-wars-title"
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.8 }}
         >
-          <span style={{ fontFamily: "Star Jedi" }} className="star-wars-title">
-            Skill Matrix
-          </span>
+          Skills
         </motion.h2>
-
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-12"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          {/* Programming Languages */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-2xl font-bold mb-4 text-blue-400">
+            <h3 className="text-xl font-bold mb-4 star-wars-title">
               Programming Languages
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -121,34 +160,34 @@ export default function Skills() {
               ))}
             </div>
           </motion.div>
-
-          {/* Frontend & Backend */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-2xl font-bold mb-4 text-blue-400">
-              Frontend & Backend
-            </h3>
+            <h3 className="text-xl font-bold mb-4 star-wars-title">Frontend</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[...skillsData.frontend, ...skillsData.backend.slice(0, 4)].map(
-                (skill) => (
-                  <SkillBar key={skill.name} {...skill} />
-                )
-              )}
+              {skillsData.frontend.map((skill) => (
+                <SkillBar key={skill.name} {...skill} />
+              ))}
             </div>
           </motion.div>
-
-          {/* Databases */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-2xl font-bold mb-4 text-blue-400">Databases</h3>
+            <h3 className="text-xl font-bold mb-4 star-wars-title">Backend</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {skillsData.backend.map((skill) => (
+                <SkillBar key={skill.name} {...skill} />
+              ))}
+            </div>
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <h3 className="text-xl font-bold mb-4 star-wars-title">
+              Databases
+            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {skillsData.databases.map((skill) => (
                 <SkillBar key={skill.name} {...skill} />
               ))}
             </div>
           </motion.div>
-
-          {/* Tools & Platforms */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-2xl font-bold mb-4 text-blue-400">
+            <h3 className="text-xl font-bold mb-4 star-wars-title">
               Tools & Platforms
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

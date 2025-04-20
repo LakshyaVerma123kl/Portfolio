@@ -35,7 +35,6 @@ export default function Contact() {
       });
 
       const result = await response.json();
-      console.log(result);
 
       if (response.ok) {
         setPopupMessage("Transmission Sent Successfully!");
@@ -47,7 +46,6 @@ export default function Contact() {
       setShowPopup(true);
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
-      console.error("Submission Error:", error);
       setPopupMessage("An error occurred. Please try again.");
       setPopupError(true);
       setShowPopup(true);
@@ -121,7 +119,6 @@ export default function Contact() {
           {isSending ? "Sending..." : "Send Transmission"}
         </motion.button>
       </motion.form>
-      {/* ✅ Custom Animated Popup */}
       <AnimatePresence>
         {showPopup && (
           <motion.div

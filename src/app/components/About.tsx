@@ -27,7 +27,7 @@ export default function About() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
         >
-          ABOUT ME
+          ABoUT ME
         </motion.h2>
 
         <motion.div
@@ -41,11 +41,15 @@ export default function About() {
             variants={sectionVariants}
           >
             <p className="mb-6">
-              I m a third-year engineering student with a flair for solving
-              complex problems and a deep love for technology. Specializing in
-              web development, I continuously explore new technologies,
-              frameworks, and methodologies to build impactful digital
-              solutions.
+              I’m a third-year engineering student with a passion for building
+              beautiful, emotional, and immersive digital experiences. My work
+              blends frontend creativity with deep storytelling — all through
+              the lens of React, Tailwind CSS, and modern animations.
+            </p>
+            <p>
+              My projects aren’t just lines of code — they’re love letters,
+              memories, and digital experiences made to move people. I strive to
+              craft moments that stay with you long after you close the tab.
             </p>
           </motion.div>
 
@@ -63,17 +67,17 @@ export default function About() {
               </p>
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li>
-                  Relevant Coursework: Data Structures, Algorithms, Database
-                  Management Systems, Operating Systems, Computer Networks,
-                  Software Engineering
+                  Relevant Coursework: Web Development, UI/UX Design, Data
+                  Structures, Algorithms, Database Systems
                 </li>
                 <li>
-                  Achievements: Secured a CGPA of 8.5/10, awarded Dean&apos;s
-                  List for academic excellence
+                  Extra-curriculars: Led teams in hackathons, explored creative
+                  product ideas
                 </li>
                 <li>
-                  Extracurricular: Particpated in Hackthons and Completed 2
-                  internships.
+                  Internship: Full Stack Developer Intern at Cantilever — built
+                  scalable, responsive websites using React, Node.js, and
+                  MongoDB
                 </li>
               </ul>
             </div>
@@ -81,37 +85,39 @@ export default function About() {
 
           <motion.div variants={sectionVariants}>
             <h3 className="text-3xl text-blue-400 font-bold mb-6 tracking-wide">
-              MY PLAYGROUND
+              MY PLAYGRoUND
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="p-4 rounded-lg bg-[#1F2937]/80 flex items-start">
-                <span className="text-2xl mr-3">🎨</span>
-                <p>Crafting intuitive user interfaces</p>
+                <span className="text-2xl mr-3">🌌</span>
+                <p>Designing emotionally resonant digital experiences</p>
               </div>
               <div className="p-4 rounded-lg bg-[#1F2937]/80 flex items-start">
-                <span className="text-2xl mr-3">⚙️</span>
-                <p>Developing robust backend systems</p>
+                <span className="text-2xl mr-3">🖌️</span>
+                <p>Crafting magical and smooth frontend interfaces</p>
               </div>
               <div className="p-4 rounded-lg bg-[#1F2937]/80 flex items-start">
-                <span className="text-2xl mr-3">📊</span>
-                <p>Designing efficient databases</p>
+                <span className="text-2xl mr-3">💡</span>
+                <p>Transforming abstract ideas into stunning realities</p>
               </div>
               <div className="p-4 rounded-lg bg-[#1F2937]/80 flex items-start">
-                <span className="text-2xl mr-3">📦</span>
-                <p>Transforming ideas into functional products through code</p>
+                <span className="text-2xl mr-3">🧠</span>
+                <p>
+                  Building tools that support mindfulness, care, and creativity
+                </p>
               </div>
             </div>
           </motion.div>
 
           <motion.div variants={sectionVariants}>
             <h3 className="text-3xl text-blue-400 font-bold mb-6 tracking-wide">
-              PROJECTS & PORTFOLIO
+              PRoJECT PoRTFoLio
             </h3>
             <div className="bg-[#1F2937]/80 p-6 rounded-lg border-b-2 border-blue-500">
               <p className="text-lg mb-4">
                 Curious about my work? Explore my projects and experiments on{" "}
                 <a
-                  href="https://github.com/Lakshya-249?tab=repositories"
+                  href="https://github.com/LakshyaVerma123kl"
                   className="text-blue-400 hover:text-blue-300 underline transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -120,29 +126,36 @@ export default function About() {
                 </a>
                 .
               </p>
+              <p className="mb-2">
+                ✨ <strong>GiftLink</strong> — a full-stack web app for gifting
+                and recycling household items. Built with React, Node.js,
+                MongoDB & Docker.
+              </p>
+              <p className="mb-2">
+                📊 <strong>Chatscope</strong> — chat analytics platform using
+                Python, Flask, and React to analyze emoji usage, timing, and
+                sentiment across 50k+ messages.
+              </p>
               <p>
-                From dynamic web applications to scalable APIs, my projects
-                reflect a strong commitment to quality and innovation.
+                🌿 <strong>Zen Men</strong> — wellness tracker and community hub
+                focused on men’s mental health. Full-stack, privacy-focused, and
+                deeply human.
               </p>
             </div>
           </motion.div>
 
           <motion.div variants={sectionVariants}>
-            <h3
-              className="text-3xl text-blue-400 font-bold
-              mb-6 tracking-wide"
-            >
-              Let s Connect!
+            <h3 className="text-3xl text-blue-400 font-bold mb-6 tracking-wide">
+              Let’s Connect!
             </h3>
             <div className="bg-[#1F2937]/80 p-6 rounded-lg border-t-2 border-blue-500">
               <p className="text-lg mb-4">
-                I m always open to new opportunities, collaborations, and
-                learning experiences. Whether you want to discuss technology,
-                brainstorm ideas, or explore potential collaborations, feel free
-                to reach out.
+                I’m always excited to collaborate, learn, or simply connect over
+                ideas that matter. Whether you're a creative, a founder, or just
+                someone who believes in magic through code — let’s talk.
               </p>
               <p className="text-xl font-semibold mt-6 text-blue-400">
-                Let s create and innovate together! 🌟
+                Let’s build something beautiful together ✨
               </p>
             </div>
           </motion.div>

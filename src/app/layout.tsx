@@ -12,28 +12,23 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cursorRef = useRef<HTMLDivElement>(null);
   const starsRef = useRef<HTMLDivElement>(null);
   const starFieldRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const starField = starFieldRef.current;
-    const cursor = cursorRef.current;
     const stars = starsRef.current;
-    if (!cursor || !stars) return;
+    if (!stars || !starField) return;
 
     const trail: HTMLDivElement[] = [];
-    const trailLength = 15; // Slightly shorter trail for sleekness
+    const trailLength = 10; // Shorter trail for smoother effect
 
     const handleMouseMove = (e: MouseEvent) => {
-      cursor.style.left = `${e.clientX}px`;
-      cursor.style.top = `${e.clientY}px`;
-
       const x = e.clientX / window.innerWidth;
       const y = e.clientY / window.innerHeight;
 
-      // Subtle parallax, less jittery
-      stars.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+      // Subtle parallax effect
+      stars.style.transform = `translate(${x * 15}px, ${y * 15}px)`;
 
       const trailParticle = document.createElement("div");
       trailParticle.className = "lightsaber-trail-particle";
@@ -46,17 +41,16 @@ export default function RootLayout({
         const oldestParticle = trail.shift();
         if (oldestParticle) {
           oldestParticle.style.opacity = "0";
-          setTimeout(() => oldestParticle.remove(), 200); // Faster fade
+          setTimeout(() => oldestParticle.remove(), 150); // Faster fade
         }
       }
     };
 
     const createStars = () => {
-      // Existing star layers...
       const layers = [
-        { count: 300, size: 1, class: "star-dim", depth: 0.5 },
-        { count: 150, size: 2, class: "star-bright", depth: 1 },
-        { count: 55, size: 3, class: "star-glow", depth: 1.5 },
+        { count: 400, size: 1, class: "star-dim", depth: 0.5 },
+        { count: 200, size: 2, class: "star-bright", depth: 1 },
+        { count: 80, size: 3, class: "star-glow", depth: 1.5 },
       ];
 
       layers.forEach((layer) => {
@@ -80,7 +74,7 @@ export default function RootLayout({
     };
 
     const createShootingStars = () => {
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 12; i++) {
         const shootingStar = document.createElement("div");
         shootingStar.className = "shooting-star";
         shootingStar.style.top = `${Math.random() * 80}%`;
@@ -90,24 +84,23 @@ export default function RootLayout({
         shootingStar.style.height = `${size}px`;
         const angle = 310 + Math.random() * 10; // 310-320deg
         shootingStar.style.setProperty("--start-angle", `${angle}deg`);
-        shootingStar.style.animationDelay = `${Math.random() * 10 + i * 2}s`; // 0-25s
-        shootingStar.style.animationDuration = `${4 + Math.random() * 2}s`; // 4-6s
-        shootingStar.style.opacity = "0"; // Start invisible
+        shootingStar.style.animationDelay = `${Math.random() * 8 + i * 1.5}s`; // 0-20s
+        shootingStar.style.animationDuration = `${3 + Math.random() * 2}s`; // 3-5s
+        shootingStar.style.opacity = "0";
         starsRef.current?.appendChild(shootingStar);
       }
     };
-    // Create the star field layers dynamically
+
     const createStarField = () => {
       const layers = 3;
       for (let i = 1; i <= layers; i++) {
         const layer = document.createElement("div");
         layer.className = `layer layer-${i}`;
-        starField?.appendChild(layer);
+        starField.appendChild(layer);
       }
     };
 
     createStarField();
-
     createStars();
     createShootingStars();
     document.addEventListener("mousemove", handleMouseMove);
@@ -125,19 +118,8 @@ export default function RootLayout({
           <div ref={starsRef} className="parallax-stars"></div>
           <div ref={starFieldRef} className="star-field"></div>
         </div>
-        <div
-          ref={cursorRef}
-          className="lightsaber-cursor"
-          style={{
-            width: "3px", // Slimmer, sharper
-            height: "25px",
-            background: "linear-gradient(180deg, #60a5fa, #1e3a8a)", // Gradient for depth
-            boxShadow: "0 0 8px #60a5fa, 0 0 15px #60a5fa, 0 0 25px #1e3a8a",
-            borderRadius: "2px",
-          }}
-        ></div>
         <Navigation />
-        {children}
+        <main className="relative z-10">{children}</main>
       </body>
     </html>
   );

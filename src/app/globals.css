@@ -19,6 +19,15 @@ body {
   overflow-x: hidden;
   font-family: "Arial", sans-serif;
 }
+
+h1,
+h2,
+h3 {
+  font-family: "Star Jedi", sans-serif;
+  color: #dbeafe;
+  filter: drop-shadow(0 0 8px rgba(219, 234, 254, 0.8));
+}
+
 .star-wars-bg {
   position: fixed;
   top: 0;
@@ -65,19 +74,10 @@ body {
   opacity: 1;
 }
 
-/* .shooting-star {
-  position: absolute;
-  width: 80px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #ffffff, transparent);
-  animation: shoot 0.8s infinite;
-  opacity: 0;
-} */
-
 .nebula {
   position: absolute;
   width: 80%;
-  height: 60%; /* Elliptical, not square */
+  height: 60%;
   top: 20%;
   left: 10%;
   background: radial-gradient(
@@ -86,7 +86,7 @@ body {
     rgba(96, 165, 250, 0.15) 60%,
     transparent 80%
   );
-  filter: blur(70px); /* Soft, deep fade */
+  filter: blur(70px);
   opacity: 0.6;
   animation: orbit 25s ease-in-out infinite;
   pointer-events: none;
@@ -127,7 +127,7 @@ body {
   box-shadow: 0 0 4px rgba(255, 255, 255, 0.5),
     0 0 10px rgba(255, 255, 255, 0.3), 0 0 25px rgba(255, 255, 255, 0.8);
   animation: shoot ease-in-out infinite;
-  opacity: 0; /* Default off-screen */
+  opacity: 0;
 }
 
 .shooting-star::before {
@@ -143,11 +143,11 @@ body {
 
 @keyframes shoot {
   0% {
-    transform: rotate(var(--start-angle)) translateX(100px); /* Start off-screen right */
+    transform: rotate(var(--start-angle)) translateX(100px);
     opacity: 0;
   }
   10% {
-    transform: rotate(var(--start-angle)) translateX(0); /* Fade in at edge */
+    transform: rotate(var(--start-angle)) translateX(0);
     opacity: 1;
   }
   50% {
@@ -161,7 +161,7 @@ body {
 }
 
 .star-wars-title {
-  font-family: "Star Jedi", sans-serif; /* Assuming you have this font */
+  font-family: "Star Jedi", sans-serif;
   letter-spacing: 1px;
   transition: all 0.3s ease;
   color: #dbeafe;
@@ -304,8 +304,6 @@ body {
   transition: width 0.3s, height 0.3s, opacity 0.3s;
 }
 
-/* Starfield */
-
 .star-field {
   position: fixed;
   top: 0;
@@ -318,7 +316,6 @@ body {
 }
 
 .layer {
-  /* Reduced number of stars for subtlety */
   box-shadow: -411px -476px #cccccc, 777px -407px #d4d4d4, -387px -477px #fcfcfc,
     -91px -235px #d4d4d4, 491px -460px #f7f7f7, 892px -128px #f7f7f7,
     758px -277px #ededed, 596px 378px #cccccc, 647px 423px whitesmoke,
@@ -365,7 +362,7 @@ body {
 @keyframes sf-fly-by-1 {
   from {
     transform: translateZ(-600px);
-    opacity: 0.4; /* Subtler opacity */
+    opacity: 0.4;
   }
   to {
     transform: translateZ(0);
@@ -396,7 +393,7 @@ body {
 }
 
 .layer-1 {
-  animation: sf-fly-by-1 7s linear infinite; /* Slower animation */
+  animation: sf-fly-by-1 7s linear infinite;
 }
 
 .layer-2 {

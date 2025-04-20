@@ -3,106 +3,134 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-const projects = [
+interface Project {
+  title: string;
+  description: string;
+  image: string;
+  technologies: string[];
+  link: string;
+}
+
+const projects: Project[] = [
   {
-    title: "8-Bit Custom Compiler and CPU Simulation",
+    title: "GiftLink",
     description:
-      "Designed an 8-bit CPU in Verilog and a C++ compiler with a full compilation pipeline.",
-    image:
-      "https://opengraph.githubassets.com/1/Lakshya-249/8-bit-toolchain-compiler_and_assembler",
-    technologies: ["C++", "Verilog", "Python", "CMake"],
-    link: "https://github.com/Lakshya-249/8-bit-toolchain-compiler_and_assembler",
-  },
-  {
-    title: "ChronoSync",
-    description:
-      "Built a schedule manager with recurring events, email alerts, and JWT auth.",
-    image: "https://opengraph.githubassets.com/1/Lakshya-249/Scheduler_Service",
-    technologies: ["TypeScript", "Nest.js", "React", "Node.js"],
-    link: "https://github.com/Lakshya-249/Scheduler_Service",
-  },
-  {
-    title: "E-commerce Service",
-    description:
-      "Created an e-commerce platform with live tracking and payments.",
-    image: "https://opengraph.githubassets.com/1/Lakshya-249/ecommerce",
-    technologies: ["React", "Node.js", "MongoDB", "TypeScript"],
-    link: "https://github.com/Lakshya-249/ecommerce",
-  },
-  {
-    id: 2,
-    title: "Recipe Book",
-    description:
-      "A recipe book site to share and see recipes with authenticated users and features like reviewing recipe adding it's photos etc",
-    image:
-      "https://opengraph.githubassets.com/1/Lakshya-249/recipe_book_frontend",
+      "A platform for giving and receiving household items, featuring a responsive front-end, secure back-end, and RESTful APIs for listings and user interactions.",
+    image: "/github-placeholder.jpeg",
     technologies: [
-      "PostgreSQL",
-      "Python",
       "React",
-      "Typescript",
-      "Django Rest Framework",
+      "Tailwind CSS",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Docker",
     ],
-    link: "https://github.com/Lakshya-249/social_media_app_backend",
+    link: "https://github.com/LakshyaVerma123kl/fullstack-capstone-project",
   },
   {
-    id: 5,
-    title: "Web Bloacker Extension",
+    title: "Chatscope",
     description:
-      "An chrome extension to block websites and pause it on demand used for blocking toddlers from visiting wrong websites and also for self to block web pages,",
-    image: "https://opengraph.githubassets.com/1/Lakshya-249/Web_Blocker",
-    technologies: ["React", "JavaScript", "Chrome Storage Api", "Manifestjs"],
-    link: "https://github.com/Lakshya-249/Web_Blocker",
+      "A conversation analysis tool that processes sentiment, response times, and emojis, with a React front-end and Flask back-end hosted on Replit and Render.",
+    image: "/github-placeholder.jpeg",
+    technologies: ["Python", "Flask", "React", "REST APIs", "Replit", "Render"],
+    link: "https://github.com/LakshyaVerma123kl/chatscope-frontend",
   },
   {
-    id: 6,
-    title: "Pdf & Websites GPT API",
+    title: "Zen Men",
     description:
-      "Created a pdf and website gpt api tool where you can talk to your pdf or webistes by providing your pdf and website link you want to talk about",
-    image: "https://opengraph.githubassets.com/1/Lakshya-249/pdf_website_gpt",
-    technologies: ["Python", "GenAI", "Langchain", "Gemni API", "Flask"],
-    link: "https://github.com/Lakshya-249/pdf_website_gpt",
+      "A wellness and habit tracker for men, featuring mood tracking, secure JWT login, and Docker-based CI/CD deployment.",
+    image: "/github-placeholder.jpeg",
+    technologies: ["React", "Node.js", "MongoDB", "Docker", "JWT"],
+    link: "https://github.com/LakshyaVerma123kl/ZenMen",
+  },
+  {
+    title: "Cantilever Ecommerce",
+    description:
+      "An e-commerce platform developed during an internship, featuring real-time tracking and payment integration for seamless user experiences.",
+    image: "/github-placeholder.jpeg",
+    technologies: ["React", "Node.js", "MongoDB"],
+    link: "https://github.com/LakshyaVerma123kl/Cantilever-Ecommerce",
+  },
+  {
+    title: "Cantilever News Website",
+    description:
+      "A news aggregation website built during an internship, designed with responsive interfaces and optimized content delivery.",
+    image: "/github-placeholder.jpeg",
+    technologies: ["React", "Node.js", "MongoDB"],
+    link: "https://github.com/LakshyaVerma123kl/Cantilever-News-Website",
+  },
+  {
+    title: "Dribble",
+    description:
+      "A dynamic platform showcasing full-stack development capabilities with modern technologies, designed to enhance user engagement.",
+    image: "/github-placeholder.jpeg",
+    technologies: ["React", "Node.js", "MongoDB"],
+    link: "https://github.com/LakshyaVerma123kl/Dribble",
   },
 ];
 
 export default function Projects() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
   return (
-    <section id="projects" className="py-16 text-white">
-      <h2
-        className="text-4xl font-extrabold star-wars-title mb-10 text-center"
-        style={{ fontFamily: "Star Jedi" }}
-      >
-        Project Archives
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        {projects.map((project, index) => (
-          <motion.div
-            key={project.title}
-            className="bg-[#1F2937]/80 rounded-lg border border-[#3B82F6]/40 shadow-lg shadow-[#3B82F6]/20 hover:shadow-[#3B82F6]/50 transition-all duration-300 transform hover:-translate-y-1"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-          >
-            <div className="relative h-48 overflow-hidden rounded-t-lg">
-              <Image
-                src={project.image || "/placeholder.svg"}
-                alt={project.title}
-                layout="fill"
-                // objectFit="cover"
-                className="hover:scale-105 object-fill transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-[#3B82F6]/10 hover:bg-[#3B82F6]/20 transition-all duration-300" />
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-white mb-2">
+    <section id="projects" className="py-16 px-4 bg-transparent relative z-10">
+      <div className="max-w-5xl mx-auto">
+        <motion.h2
+          className="text-4xl font-bold mb-10 text-center star-wars-title"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          Projects
+        </motion.h2>
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {projects.map((project) => (
+            <motion.div
+              key={project.title}
+              className="relative bg-[#1F2937]/80 rounded-lg p-5 border border-blue-500/20 shadow-md shadow-blue-500/10 hover:shadow-blue-500/30 transition-all duration-300 force-float"
+              variants={itemVariants}
+              whileHover={{ scale: 1.03 }}
+            >
+              <div className="relative w-full h-48 mb-4 overflow-hidden rounded-md">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  onError={() =>
+                    console.error(`Failed to load ${project.image}`)
+                  }
+                />
+                <div className="absolute inset-0 bg-blue-500/10 hover:bg-blue-500/20 transition-all duration-300" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 text-white">
                 {project.title}
               </h3>
-              <p className="text-gray-300 mb-4">{project.description}</p>
+              <p className="text-gray-300 mb-4 text-sm">
+                {project.description}
+              </p>
               <div className="flex flex-wrap gap-2 mb-4">
                 {project.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="bg-[#3B82F6]/20 text-[#3B82F6] text-xs px-2 py-1 rounded-full border border-[#3B82F6]/50"
+                    className="px-2 py-1 text-xs text-[#60a5fa] bg-[#1F2937]/50 rounded-full border border-blue-500/50"
                   >
                     {tech}
                   </span>
@@ -111,14 +139,14 @@ export default function Projects() {
               <a
                 href={project.link}
                 target="_blank"
-                className="relative px-6 py-2 text-white font-medium bg-[#3B82F6]/20 border border-[#3B82F6]/50 rounded-full hover:bg-[#3B82F6]/40 transition-all duration-300 shadow-md shadow-[#3B82F6]/30 hover:shadow-[#3B82F6]/50 overflow-hidden group"
+                rel="noopener noreferrer"
+                className="px-6 py-2 text-white font-medium bg-black/20 border border-[#3B82F6]/50 rounded-full lightsaber-btn shadow-lg shadow-[#3B82F6]/30"
               >
-                <span className="relative z-10">View Project</span>
-                <div className="absolute inset-0 bg-[#3B82F6] opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+                View Project
               </a>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
