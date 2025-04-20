@@ -46,11 +46,6 @@ export default function About() {
               blends frontend creativity with deep storytelling — all through
               the lens of React, Tailwind CSS, and modern animations.
             </p>
-            <p>
-              My projects aren’t just lines of code — they’re love letters,
-              memories, and digital experiences made to move people. I strive to
-              craft moments that stay with you long after you close the tab.
-            </p>
           </motion.div>
 
           <motion.div variants={sectionVariants}>
