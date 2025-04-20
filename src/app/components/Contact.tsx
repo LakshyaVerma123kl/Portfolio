@@ -43,10 +43,15 @@ export default function Contact() {
         setPopupMessage(result.message || "Failed to send transmission.");
         setPopupError(true);
       }
+
       setShowPopup(true);
       setFormData({ name: "", email: "", message: "" });
-    } catch (error: any) {
-      setPopupMessage(`An error occurred: ${error.message || "Unknown error"}`);
+    } catch (error) {
+      if (error instanceof Error) {
+        setPopupMessage(`An error occurred: ${error.message}`);
+      } else {
+        setPopupMessage("An unknown error occurred.");
+      }
       setPopupError(true);
       setShowPopup(true);
     } finally {
