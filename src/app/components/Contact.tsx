@@ -36,17 +36,17 @@ export default function Contact() {
 
       const result = await response.json();
 
-      if (response.ok) {
+      if (response.ok && result.success) {
         setPopupMessage("Transmission Sent Successfully!");
         setPopupError(false);
       } else {
-        setPopupMessage("Failed to send transmission.");
+        setPopupMessage(result.message || "Failed to send transmission.");
         setPopupError(true);
       }
       setShowPopup(true);
       setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      setPopupMessage("An error occurred. Please try again.");
+    } catch (error: any) {
+      setPopupMessage(`An error occurred: ${error.message}`);
       setPopupError(true);
       setShowPopup(true);
     } finally {

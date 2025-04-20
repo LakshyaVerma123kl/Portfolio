@@ -138,7 +138,7 @@ export default function About() {
               </p>
               <p>
                 🌿 <strong>Zen Men</strong> — wellness tracker and community hub
-                focused on men’s mental health. Full-stack, privacy-focused, and
+                focused on mens mental health. Full-stack, privacy-focused, and
                 deeply human.
               </p>
             </div>
@@ -146,16 +146,16 @@ export default function About() {
 
           <motion.div variants={sectionVariants}>
             <h3 className="text-3xl text-blue-400 font-bold mb-6 tracking-wide">
-              Let’s Connect!
+              Lets Connect!
             </h3>
             <div className="bg-[#1F2937]/80 p-6 rounded-lg border-t-2 border-blue-500">
               <p className="text-lg mb-4">
-                I’m always excited to collaborate, learn, or simply connect over
-                ideas that matter. Whether you're a creative, a founder, or just
-                someone who believes in magic through code — let’s talk.
+                Im always excited to collaborate, learn, or simply connect over
+                ideas that matter. Whether youre a creative, a founder, or just
+                someone who believes in magic through code — lets talk.
               </p>
               <p className="text-xl font-semibold mt-6 text-blue-400">
-                Let’s build something beautiful together ✨
+                Lets build something beautiful together ✨
               </p>
             </div>
           </motion.div>
