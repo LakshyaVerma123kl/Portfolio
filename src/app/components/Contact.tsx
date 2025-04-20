@@ -46,7 +46,7 @@ export default function Contact() {
       setShowPopup(true);
       setFormData({ name: "", email: "", message: "" });
     } catch (error: any) {
-      setPopupMessage(`An error occurred: ${error.message}`);
+      setPopupMessage(`An error occurred: ${error.message || "Unknown error"}`);
       setPopupError(true);
       setShowPopup(true);
     } finally {
