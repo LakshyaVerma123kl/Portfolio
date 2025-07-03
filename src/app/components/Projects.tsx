@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface GitHubRepo {
   id: number;
@@ -36,8 +36,8 @@ export default function Projects() {
   // Your GitHub username
   const GITHUB_USERNAME = "LakshyaVerma123kl";
 
-  // Fallback projects (your current projects)
-  const fallbackProjects: Project[] = [
+  // Fallback projects (your current projects) - moved inside useCallback to avoid dependency issues
+  const getFallbackProjects = useCallback((): Project[] => [
     {
       title: "GiftLink",
       description: "A platform for giving and receiving household items, featuring a responsive front-end, secure back-end, and RESTful APIs for listings and user interactions.",
@@ -98,63 +98,63 @@ export default function Projects() {
       forks: 0,
       language: "JavaScript"
     }
-  ];
+  ], []);
+
+  const fetchGitHubProjects = useCallback(async () => {
+    try {
+      setLoading(true);
+      
+      // Try to fetch from your API route first
+      let response = await fetch('/api/github-repos');
+      
+      // If API route fails, fallback to direct GitHub API
+      if (!response.ok) {
+        response = await fetch(
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`
+        );
+      }
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch repositories');
+      }
+      
+      const repos: GitHubRepo[] = await response.json();
+      
+      // Filter out forked repos and get only your original work
+      const originalRepos = repos.filter(repo => !repo.name.includes('fork'));
+      
+      const formattedProjects: Project[] = originalRepos.slice(0, 6).map(repo => ({
+        title: repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        description: repo.description || "No description available",
+        image: "/github-placeholder.jpeg",
+        technologies: [
+          repo.language,
+          // Add common tech stack based on language
+          ...(repo.language === 'JavaScript' ? ['React', 'Node.js'] : []),
+          ...(repo.language === 'Python' ? ['Flask', 'Django'] : []),
+          ...(repo.language === 'TypeScript' ? ['React', 'Next.js'] : []),
+        ].filter(Boolean).slice(0, 5),
+        link: repo.html_url,
+        stars: repo.stargazers_count,
+        forks: repo.forks_count,
+        language: repo.language || "Unknown"
+      }));
+      
+      setProjects(formattedProjects.length > 0 ? formattedProjects : getFallbackProjects());
+      setError(null);
+      
+    } catch (err) {
+      console.error('Error fetching GitHub repos:', err);
+      setError('Using cached projects');
+      setProjects(getFallbackProjects());
+    } finally {
+      setLoading(false);
+    }
+  }, [GITHUB_USERNAME, getFallbackProjects]);
 
   useEffect(() => {
-    const fetchGitHubProjects = async () => {
-      try {
-        setLoading(true);
-        
-        // Try to fetch from your API route first
-        let response = await fetch('/api/github-repos');
-        
-        // If API route fails, fallback to direct GitHub API
-        if (!response.ok) {
-          response = await fetch(
-            `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`
-          );
-        }
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch repositories');
-        }
-        
-        const repos: GitHubRepo[] = await response.json();
-        
-        // Filter out forked repos and get only your original work
-        const originalRepos = repos.filter(repo => !repo.name.includes('fork'));
-        
-        const formattedProjects: Project[] = originalRepos.slice(0, 6).map(repo => ({
-          title: repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-          description: repo.description || "No description available",
-          image: "/github-placeholder.jpeg",
-          technologies: [
-            repo.language,
-            // Add common tech stack based on language
-            ...(repo.language === 'JavaScript' ? ['React', 'Node.js'] : []),
-            ...(repo.language === 'Python' ? ['Flask', 'Django'] : []),
-            ...(repo.language === 'TypeScript' ? ['React', 'Next.js'] : []),
-          ].filter(Boolean).slice(0, 5),
-          link: repo.html_url,
-          stars: repo.stargazers_count,
-          forks: repo.forks_count,
-          language: repo.language || "Unknown"
-        }));
-        
-        setProjects(formattedProjects.length > 0 ? formattedProjects : fallbackProjects);
-        setError(null);
-        
-      } catch (err) {
-        console.error('Error fetching GitHub repos:', err);
-        setError('Using cached projects');
-        setProjects(fallbackProjects);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchGitHubProjects();
-  }, []);
+  }, [fetchGitHubProjects]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
