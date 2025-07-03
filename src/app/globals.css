@@ -496,6 +496,205 @@ h3 {
   90% {
     opacity: 1;
   }
+  .star-wars-bg {
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.star-wars-bg.loaded {
+  opacity: 1;
+}
+
+/* SUBTLE ENHANCEMENT 2: Improved lightsaber trail with color variation */
+.lightsaber-trail-particle {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, 
+    hsl(var(--trail-hue, 200), 100%, 80%) 0%, 
+    hsl(var(--trail-hue, 200), 100%, 60%) 40%, 
+    transparent 70%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  animation: trailFade 0.3s ease-out forwards;
+  box-shadow: 0 0 6px hsl(var(--trail-hue, 200), 100%, 70%);
+}
+
+@keyframes trailFade {
+  0% { 
+    opacity: 0.8; 
+    transform: scale(1); 
+  }
+  100% { 
+    opacity: 0; 
+    transform: scale(0.3); 
+  }
+}
+
+/* SUBTLE ENHANCEMENT 3: More varied star twinkling */
+.star-glow {
+  animation: twinkle 3s ease-in-out infinite alternate;
+}
+
+.star-bright {
+  animation: twinkle 2.5s ease-in-out infinite alternate;
+}
+
+.star-dim {
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0%, 20% { opacity: 0.3; }
+  50% { opacity: 1; }
+  80%, 100% { opacity: 0.6; }
+}
+
+/* SUBTLE ENHANCEMENT 4: Improved shooting star trails */
+.shooting-star {
+  position: absolute;
+  background: linear-gradient(
+    var(--start-angle, 315deg),
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 10%,
+    rgba(135, 206, 235, 0.8) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  border-radius: 50%;
+  animation: shootingStarMove linear infinite;
+}
+
+.shooting-star::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(135, 206, 235, 0.8),
+    transparent
+  );
+  transform: translate(-50%, -50%) rotate(var(--start-angle, 315deg));
+}
+
+@keyframes shootingStarMove {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px) translateY(100px);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100vw) translateY(-100vh);
+  }
+}
+
+/* SUBTLE ENHANCEMENT 5: Gentle pulse for nebula */
+.nebula {
+  animation: nebulaPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes nebulaPulse {
+  0% { 
+    opacity: 0.1; 
+    transform: scale(1);
+  }
+  100% { 
+    opacity: 0.3; 
+    transform: scale(1.1);
+  }
+}
+
+/* SUBTLE ENHANCEMENT 6: Smooth hover effects for navigation */
+nav a {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+nav a::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #00ffff, transparent);
+  transition: width 0.3s ease;
+}
+
+nav a:hover::before {
+  width: 100%;
+}
+
+/* SUBTLE ENHANCEMENT 7: Gentle scroll indicator */
+.scroll-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(0, 255, 255, 0.5) 50%, 
+    transparent 100%
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.1s ease;
+  z-index: 9999;
+}
+
+/* SUBTLE ENHANCEMENT 8: Improved focus states for accessibility */
+*:focus-visible {
+  outline: 2px solid #00ffff;
+  outline-offset: 2px;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* SUBTLE ENHANCEMENT 9: Subtle animations for components */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* SUBTLE ENHANCEMENT 10: Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .star-wars-bg {
+    animation: none;
+  }
+  
+  .star, .shooting-star, .nebula {
+    animation: none;
+  }
+  
+  .lightsaber-trail-particle {
+    display: none;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
   100% {
     transform: translateY(calc(100vh + 100px)) scale(1.5);
     opacity: 0;
