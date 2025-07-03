@@ -106,7 +106,7 @@ export default function Projects() {
         setLoading(true);
         
         // Try to fetch from your API route first
-        let response = await fetch('/api/github-repos');
+        let response = await fetch('/api');
         
         // If API route fails, fallback to direct GitHub API
         if (!response.ok) {
