@@ -100,13 +100,136 @@ export default function Projects() {
     }
   ];
 
+  // Function to fetch README content
+  const fetchReadmeContent = async (repoName: string): Promise<string> => {
+    try {
+      // Try different README file names
+      const readmeFiles = ['README.md', 'readme.md', 'Readme.md', 'README.txt'];
+      
+      for (const fileName of readmeFiles) {
+        try {
+          const response = await fetch(
+            `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${repoName}/main/${fileName}`
+          );
+          
+          if (response.ok) {
+            const content = await response.text();
+            return extractDescriptionFromReadme(content);
+          }
+        } catch (error) {
+          // Try 'master' branch if 'main' doesn't work
+          try {
+            const response = await fetch(
+              `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${repoName}/master/${fileName}`
+            );
+            
+            if (response.ok) {
+              const content = await response.text();
+              return extractDescriptionFromReadme(content);
+            }
+          } catch (masterError) {
+            continue;
+          }
+        }
+      }
+      
+      return "";
+    } catch (error) {
+      console.error(`Error fetching README for ${repoName}:`, error);
+      return "";
+    }
+  };
+
+  // Function to extract description from README content
+  const extractDescriptionFromReadme = (content: string): string => {
+    // Remove markdown syntax and get meaningful content
+    const lines = content.split('\n').filter(line => line.trim());
+    
+    // Skip title lines (usually starting with #)
+    const contentLines = lines.filter(line => !line.startsWith('#') && line.trim().length > 0);
+    
+    // Look for description patterns
+    for (const line of contentLines) {
+      // Skip lines that are just links, badges, or short phrases
+      if (line.length > 50 && 
+          !line.includes('[![') && 
+          !line.startsWith('http') && 
+          !line.includes('## ') &&
+          !line.includes('### ')) {
+        // Clean up the line
+        return line
+          .replace(/\*\*/g, '') // Remove bold markdown
+          .replace(/\*/g, '') // Remove italic markdown
+          .replace(/`/g, '') // Remove code markdown
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Replace links with text
+          .trim()
+          .substring(0, 200); // Limit length
+      }
+    }
+    
+    // If no good description found, try to get the first substantial paragraph
+    const firstParagraph = contentLines.find(line => line.length > 30);
+    if (firstParagraph) {
+      return firstParagraph
+        .replace(/\*\*/g, '')
+        .replace(/\*/g, '')
+        .replace(/`/g, '')
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .trim()
+        .substring(0, 200);
+    }
+    
+    return "";
+  };
+
+  // Function to extract technologies from README
+  const extractTechnologiesFromReadme = (content: string, repoLanguage: string): string[] => {
+    const technologies = new Set<string>();
+    
+    // Add the main language
+    if (repoLanguage) {
+      technologies.add(repoLanguage);
+    }
+    
+    // Common technology patterns in README
+    const techPatterns = [
+      /react/gi, /vue/gi, /angular/gi, /svelte/gi,
+      /node\.?js/gi, /express/gi, /fastify/gi, /nestjs/gi,
+      /mongodb/gi, /postgresql/gi, /mysql/gi, /sqlite/gi,
+      /tailwind/gi, /bootstrap/gi, /sass/gi, /css/gi,
+      /typescript/gi, /javascript/gi, /python/gi, /java/gi,
+      /docker/gi, /kubernetes/gi, /aws/gi, /azure/gi,
+      /firebase/gi, /vercel/gi, /netlify/gi, /heroku/gi,
+      /redux/gi, /zustand/gi, /context/gi, /mobx/gi,
+      /next\.?js/gi, /nuxt/gi, /gatsby/gi, /vite/gi,
+      /flask/gi, /django/gi, /spring/gi, /laravel/gi,
+      /jwt/gi, /auth0/gi, /passport/gi, /oauth/gi
+    ];
+    
+    // Search for technologies in content
+    const lowerContent = content.toLowerCase();
+    techPatterns.forEach(pattern => {
+      const matches = lowerContent.match(pattern);
+      if (matches) {
+        // Normalize the technology name
+        const tech = matches[0].toLowerCase()
+          .replace(/\.?js/g, '.js')
+          .replace(/^(.)/, (match) => match.toUpperCase());
+        technologies.add(tech);
+      }
+    });
+    
+    // Convert to array and limit to 6 items
+    return Array.from(technologies).slice(0, 6);
+  };
+
   useEffect(() => {
     const fetchGitHubProjects = async () => {
       try {
         setLoading(true);
         
         // Try to fetch from your API route first
-        let response = await fetch('/api');
+        let response = await fetch('/api/github-repos');
         
         // If API route fails, fallback to direct GitHub API
         if (!response.ok) {
@@ -124,22 +247,33 @@ export default function Projects() {
         // Filter out forked repos and get only your original work
         const originalRepos = repos.filter(repo => !repo.name.includes('fork'));
         
-        const formattedProjects: Project[] = originalRepos.slice(0, 6).map(repo => ({
-          title: repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-          description: repo.description || "No description available",
-          image: "/github-placeholder.jpeg",
-          technologies: [
-            repo.language,
-            // Add common tech stack based on language
-            ...(repo.language === 'JavaScript' ? ['React', 'Node.js'] : []),
-            ...(repo.language === 'Python' ? ['Flask', 'Django'] : []),
-            ...(repo.language === 'TypeScript' ? ['React', 'Next.js'] : []),
-          ].filter(Boolean).slice(0, 5),
-          link: repo.html_url,
-          stars: repo.stargazers_count,
-          forks: repo.forks_count,
-          language: repo.language || "Unknown"
-        }));
+        // Fetch README content for each repo
+        const formattedProjects: Project[] = await Promise.all(
+          originalRepos.slice(0, 6).map(async (repo) => {
+            const readmeDescription = await fetchReadmeContent(repo.name);
+            const readmeTechnologies = extractTechnologiesFromReadme(
+              readmeDescription, 
+              repo.language
+            );
+            
+            return {
+              title: repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+              description: readmeDescription || repo.description || "No description available",
+              image: "/github-placeholder.jpeg",
+              technologies: readmeTechnologies.length > 0 ? readmeTechnologies : [
+                repo.language,
+                // Add common tech stack based on language as fallback
+                ...(repo.language === 'JavaScript' ? ['React', 'Node.js'] : []),
+                ...(repo.language === 'Python' ? ['Flask', 'Django'] : []),
+                ...(repo.language === 'TypeScript' ? ['React', 'Next.js'] : []),
+              ].filter(Boolean).slice(0, 5),
+              link: repo.html_url,
+              stars: repo.stargazers_count,
+              forks: repo.forks_count,
+              language: repo.language || "Unknown"
+            };
+          })
+        );
         
         setProjects(formattedProjects.length > 0 ? formattedProjects : fallbackProjects);
         setError(null);
@@ -178,7 +312,7 @@ export default function Projects() {
           </h2>
           <div className="flex justify-center items-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-            <span className="ml-4 text-gray-300">Loading projects...</span>
+            <span className="ml-4 text-gray-300">Loading projects and README files...</span>
           </div>
         </div>
       </section>
@@ -256,7 +390,7 @@ export default function Projects() {
                 )}
               </div>
 
-              <p className="text-gray-300 mb-4 text-sm">
+              <p className="text-gray-300 mb-4 text-sm leading-relaxed">
                 {project.description}
               </p>
 
@@ -271,14 +405,24 @@ export default function Projects() {
                 ))}
               </div>
 
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-6 py-2 text-white font-medium bg-black/20 border border-[#3B82F6]/50 rounded-full lightsaber-btn shadow-lg shadow-[#3B82F6]/30 hover:bg-[#3B82F6]/10 transition-all duration-300"
-              >
-                View Project →
-              </a>
+              <div className="flex gap-3">
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-6 py-2 text-white font-medium bg-black/20 border border-[#3B82F6]/50 rounded-full lightsaber-btn shadow-lg shadow-[#3B82F6]/30 hover:bg-[#3B82F6]/10 transition-all duration-300"
+                >
+                  View Project →
+                </a>
+                <a
+                  href={`${project.link}#readme`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-4 py-2 text-gray-300 font-medium bg-gray-800/20 border border-gray-500/50 rounded-full hover:bg-gray-700/20 transition-all duration-300 text-sm"
+                >
+                  README
+                </a>
+              </div>
             </motion.div>
           ))}
         </motion.div>
