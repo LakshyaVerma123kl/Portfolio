@@ -4,6 +4,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Navigation from "./components/Navigation";
 import { useEffect, useRef, useState } from "react";
+import ChatWidget from "./components/ChatWidget";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,11 +37,11 @@ export default function RootLayout({
       trailParticle.className = "lightsaber-trail-particle";
       trailParticle.style.left = `${e.clientX}px`;
       trailParticle.style.top = `${e.clientY}px`;
-      
+
       // Add subtle color variation
       const hue = (x * 360) % 360;
-      trailParticle.style.setProperty('--trail-hue', `${hue}`);
-      
+      trailParticle.style.setProperty("--trail-hue", `${hue}`);
+
       document.body.appendChild(trailParticle);
       trail.push(trailParticle);
 
@@ -72,12 +73,12 @@ export default function RootLayout({
           star.style.top = `${Math.random() * 100}%`;
           star.style.transform = `scale(${layer.depth})`;
           star.style.animationDelay = `${Math.random() * 3}s`;
-          
+
           // Add subtle twinkle variation
           if (Math.random() > 0.7) {
             star.style.animationDuration = `${2 + Math.random() * 2}s`;
           }
-          
+
           stars.appendChild(star);
         }
       });
@@ -120,7 +121,7 @@ export default function RootLayout({
       createStarField();
       createStars();
       createShootingStars();
-      
+
       // Fade in effect
       setTimeout(() => setIsLoaded(true), 100);
     };
@@ -148,12 +149,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className={`star-wars-bg ${isLoaded ? 'loaded' : ''}`}>
+        <div className={`star-wars-bg ${isLoaded ? "loaded" : ""}`}>
           <div ref={starsRef} className="parallax-stars"></div>
           <div ref={starFieldRef} className="star-field"></div>
         </div>
         <Navigation />
         <main className="relative z-10">{children}</main>
+        <ChatWidget />
       </body>
     </html>
   );
