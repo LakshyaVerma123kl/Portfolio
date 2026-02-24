@@ -45,7 +45,7 @@ export default function ChatWidget() {
         ...prev,
         { role: "assistant", content: data.reply },
       ]);
-    } catch (error) {
+    } catch  {
       setMessages((prev) => [
         ...prev,
         {
