@@ -1,288 +1,225 @@
 "use client";
 
+import { useEffect, useState, useCallback, MouseEvent } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { useEffect, useState, useCallback } from "react";
 
 interface GitHubRepo {
-  id: number;
   name: string;
   description: string;
   html_url: string;
-  topics: string[];
   language: string;
   stargazers_count: number;
   forks_count: number;
-  updated_at: string;
-  homepage?: string;
 }
 
 interface Project {
   title: string;
   description: string;
-  image: string;
   technologies: string[];
   link: string;
   stars: number;
   forks: number;
-  language: string;
+  featured?: boolean;
 }
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Your GitHub username
-  const GITHUB_USERNAME = "LakshyaVerma123kl";
-
-  // Fallback projects (your current projects) - moved inside useCallback to avoid dependency issues
   const getFallbackProjects = useCallback((): Project[] => [
     {
-      title: "GiftLink",
-      description: "A platform for giving and receiving household items, featuring a responsive front-end, secure back-end, and RESTful APIs for listings and user interactions.",
-      image: "/github-placeholder.jpeg",
-      technologies: ["React", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "Docker"],
-      link: "https://github.com/LakshyaVerma123kl/fullstack-capstone-project",
+      title: "FitnessAI",
+      description:
+        "AI-powered personal trainer & diet planner with a multi-LLM fallback system, auto-progression engine, calendar export, and personalized notifications.",
+      technologies: ["Next.js", "TypeScript", "Supabase", "Gemini API"],
+      link: "https://github.com/LakshyaVerma123kl",
       stars: 0,
       forks: 0,
-      language: "JavaScript"
+      featured: true,
     },
     {
       title: "Chatscope",
-      description: "A conversation analysis tool that processes sentiment, response times, and emojis, with a React front-end and Flask back-end hosted on Replit and Render.",
-      image: "/github-placeholder.jpeg",
-      technologies: ["Python", "Flask", "React", "REST APIs", "Replit", "Render"],
+      description:
+        "Analysis tool processing sentiment, response times, and dynamics across 50k+ messages with custom algorithms and flow graph visualizations.",
+      technologies: ["Python", "Flask", "React"],
       link: "https://github.com/LakshyaVerma123kl/chatscope-frontend",
       stars: 0,
       forks: 0,
-      language: "Python"
+      featured: true,
+    },
+    {
+      title: "GiftLink",
+      description:
+        "Platform for giving household items with secure backend and RESTful APIs.",
+      technologies: ["React", "Express", "MongoDB"],
+      link: "https://github.com/LakshyaVerma123kl/fullstack-capstone-project",
+      stars: 0,
+      forks: 0,
     },
     {
       title: "Zen Men",
-      description: "A wellness and habit tracker for men, featuring mood tracking, secure JWT login, and Docker-based CI/CD deployment.",
-      image: "/github-placeholder.jpeg",
-      technologies: ["React", "Node.js", "MongoDB", "Docker", "JWT"],
+      description:
+        "Habit tracker featuring secure JWT authentication and Docker CI/CD.",
+      technologies: ["React", "Node.js", "MongoDB", "Docker"],
       link: "https://github.com/LakshyaVerma123kl/ZenMen",
       stars: 0,
       forks: 0,
-      language: "JavaScript"
     },
     {
-      title: "Cantilever Ecommerce",
-      description: "An e-commerce platform developed during an internship, featuring real-time tracking and payment integration for seamless user experiences.",
-      image: "/github-placeholder.jpeg",
+      title: "RecallIQ",
+      description:
+        "Flashcard application with SM-2 spaced repetition engine for adaptive learning.",
+      technologies: ["Next.js", "TypeScript", "Vercel"],
+      link: "https://github.com/LakshyaVerma123kl",
+      stars: 0,
+      forks: 0,
+    },
+    {
+      title: "Ecommerce Platform",
+      description:
+        "E-commerce solution built with real-time tracking and payment integration.",
       technologies: ["React", "Node.js", "MongoDB"],
       link: "https://github.com/LakshyaVerma123kl/Cantilever-Ecommerce",
       stars: 0,
       forks: 0,
-      language: "JavaScript"
     },
-    {
-      title: "Cantilever News Website",
-      description: "A news aggregation website built during an internship, designed with responsive interfaces and optimized content delivery.",
-      image: "/github-placeholder.jpeg",
-      technologies: ["React", "Node.js", "MongoDB"],
-      link: "https://github.com/LakshyaVerma123kl/Cantilever-News-Website",
-      stars: 0,
-      forks: 0,
-      language: "JavaScript"
-    },
-    {
-      title: "Dribble",
-      description: "A dynamic platform showcasing full-stack development capabilities with modern technologies, designed to enhance user engagement.",
-      image: "/github-placeholder.jpeg",
-      technologies: ["React", "Node.js", "MongoDB"],
-      link: "https://github.com/LakshyaVerma123kl/Dribble",
-      stars: 0,
-      forks: 0,
-      language: "JavaScript"
-    }
   ], []);
 
   const fetchGitHubProjects = useCallback(async () => {
     try {
       setLoading(true);
-      
-      // Try to fetch from your API route first
-      let response = await fetch('/api');
-      
-      // If API route fails, fallback to direct GitHub API
+      let response = await fetch("/api");
       if (!response.ok) {
         response = await fetch(
-          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`
+          `https://api.github.com/users/LakshyaVerma123kl/repos?sort=updated&per_page=6`
         );
       }
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch repositories');
-      }
-      
+      if (!response.ok) throw new Error("Failed");
       const repos: GitHubRepo[] = await response.json();
-      
-      // Filter out forked repos and get only your original work
-      const originalRepos = repos.filter(repo => !repo.name.includes('fork'));
-      
-      const formattedProjects: Project[] = originalRepos.slice(0, 6).map(repo => ({
-        title: repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-        description: repo.description || "No description available",
-        image: "/github-placeholder.jpeg",
+      const originals = repos.filter((r) => !r.name.includes("fork"));
+      const formatted: Project[] = originals.slice(0, 6).map((repo) => ({
+        title: repo.name.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
+        description: repo.description || "No description available.",
         technologies: [
           repo.language,
-          // Add common tech stack based on language
-          ...(repo.language === 'JavaScript' ? ['React', 'Node.js'] : []),
-          ...(repo.language === 'Python' ? ['Flask', 'Django'] : []),
-          ...(repo.language === 'TypeScript' ? ['React', 'Next.js'] : []),
-        ].filter(Boolean).slice(0, 5),
+          ...(repo.language === "JavaScript" ? ["React"] : []),
+          ...(repo.language === "Python" ? ["Flask"] : []),
+          ...(repo.language === "TypeScript" ? ["Next.js"] : []),
+        ].filter(Boolean).slice(0, 4),
         link: repo.html_url,
         stars: repo.stargazers_count,
         forks: repo.forks_count,
-        language: repo.language || "Unknown"
       }));
-      
-      setProjects(formattedProjects.length > 0 ? formattedProjects : getFallbackProjects());
-      setError(null);
-      
-    } catch (err) {
-      console.error('Error fetching GitHub repos:', err);
-      setError('Using cached projects');
+      setProjects(formatted.length > 0 ? formatted : getFallbackProjects());
+    } catch {
       setProjects(getFallbackProjects());
     } finally {
       setLoading(false);
     }
-  }, [GITHUB_USERNAME, getFallbackProjects]);
+  }, [getFallbackProjects]);
 
   useEffect(() => {
     fetchGitHubProjects();
   }, [fetchGitHubProjects]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2 },
-    },
+  // Vercel-style Mouse Spotlight Effect
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    const cards = document.querySelectorAll(".spotlight-card");
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      (card as HTMLElement).style.setProperty("--mouse-x", `${x}px`);
+      (card as HTMLElement).style.setProperty("--mouse-y", `${y}px`);
+    });
   };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
-
-  if (loading) {
-    return (
-      <section id="projects" className="py-16 px-4 bg-transparent relative z-10">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-4xl font-bold mb-10 text-center star-wars-title">
-            Projects
-          </h2>
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-            <span className="ml-4 text-gray-300">Loading projects...</span>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
-    <section id="projects" className="py-16 px-4 bg-transparent relative z-10">
-      <div className="max-w-5xl mx-auto">
-        <motion.div
-          className="flex items-center justify-center mb-10"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+    <section id="projects" className="py-12 px-6 max-w-4xl mx-auto">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
+      >
+        <div>
+          <h2 className="text-xl font-bold tracking-tight text-zinc-50 mb-2">Projects.</h2>
+          <p className="text-zinc-500 font-mono text-sm">Selected work & experiments</p>
+        </div>
+        <a
+          href="https://github.com/LakshyaVerma123kl"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs font-mono uppercase tracking-widest text-zinc-400 hover:text-zinc-50 transition-colors"
         >
-          <h2 className="text-4xl font-bold text-center star-wars-title">
-            Projects
-          </h2>
-          {error && (
-            <span className="ml-4 text-yellow-400 text-sm bg-yellow-900/20 px-2 py-1 rounded">
-              ⚠️ {error}
-            </span>
-          )}
-        </motion.div>
+          View GitHub →
+        </a>
+      </motion.div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+      {loading ? (
+        <div className="py-20 text-zinc-500 font-mono text-sm">Loading projects...</div>
+      ) : (
+        <div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          onMouseMove={handleMouseMove}
         >
-          {projects.map((project, index) => (
-            <motion.div
-              key={`${project.title}-${index}`}
-              className="relative bg-[#1F2937]/80 rounded-lg p-5 border border-blue-500/20 shadow-md shadow-blue-500/10 hover:shadow-blue-500/30 transition-all duration-300 force-float"
-              variants={itemVariants}
-              whileHover={{ scale: 1.03 }}
+          {projects.map((project, i) => (
+            <motion.a
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: i * 0.1 }}
+              key={i}
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`spotlight-card group relative bg-[#0c0c0e] border border-white/5 rounded-2xl p-6 sm:p-8 overflow-hidden transition-all duration-500 hover:-translate-y-1 ${
+                project.featured ? "md:col-span-2" : ""
+              }`}
             >
-              <div className="relative w-full h-48 mb-4 overflow-hidden rounded-md">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover hover:scale-105 transition-transform duration-300"
-                  onError={() =>
-                    console.error(`Failed to load ${project.image}`)
-                  }
-                />
-                <div className="absolute inset-0 bg-blue-500/10 hover:bg-blue-500/20 transition-all duration-300" />
-                
-                {/* GitHub stats overlay */}
-                <div className="absolute top-2 right-2 flex gap-2">
-                  {project.stars > 0 && (
-                    <span className="bg-black/60 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
-                      ⭐ {project.stars}
-                    </span>
-                  )}
-                  {project.forks > 0 && (
-                    <span className="bg-black/60 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
-                      🔀 {project.forks}
-                    </span>
-                  )}
+              {/* Spotlight Overlay */}
+              <div 
+                className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
+                style={{
+                  background: `radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(129, 140, 248, 0.1), transparent 40%)`
+                }}
+              />
+              
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="text-zinc-50 font-medium group-hover:text-indigo-400 transition-colors duration-300">
+                    {project.title}
+                  </h3>
+                  <svg
+                    className="w-4 h-4 text-zinc-600 group-hover:text-indigo-400 transition-all duration-300 transform group-hover:-translate-y-1 group-hover:translate-x-1"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </div>
+
+                <p className="text-zinc-400 text-sm leading-relaxed mb-6">
+                  {project.description}
+                </p>
+
+                <div className="flex flex-wrap items-center justify-between gap-4 mt-auto pt-4 border-t border-white/5">
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech, ti) => (
+                      <span key={ti} className="tech-pill">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono">
+                    {project.stars > 0 && <span>★ {project.stars}</span>}
+                    {project.forks > 0 && <span>⑂ {project.forks}</span>}
+                  </div>
                 </div>
               </div>
-
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="text-xl font-bold text-white">
-                  {project.title}
-                </h3>
-                {project.language && (
-                  <span className="text-xs text-gray-400 bg-gray-800/50 px-2 py-1 rounded">
-                    {project.language}
-                  </span>
-                )}
-              </div>
-
-              <p className="text-gray-300 mb-4 text-sm">
-                {project.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.technologies.map((tech, techIndex) => (
-                  <span
-                    key={`${tech}-${techIndex}`}
-                    className="px-2 py-1 text-xs text-[#60a5fa] bg-[#1F2937]/50 rounded-full border border-blue-500/50"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-6 py-2 text-white font-medium bg-black/20 border border-[#3B82F6]/50 rounded-full lightsaber-btn shadow-lg shadow-[#3B82F6]/30 hover:bg-[#3B82F6]/10 transition-all duration-300"
-              >
-                View Project →
-              </a>
-            </motion.div>
+            </motion.a>
           ))}
-        </motion.div>
-      </div>
+        </div>
+      )}
     </section>
   );
 }

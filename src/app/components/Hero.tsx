@@ -1,94 +1,80 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Hero() {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 300, damping: 24 },
+    },
+  };
+
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      className="min-h-screen flex flex-col justify-center max-sm:justify-start max-sm:pt-16 items-center text-center relative overflow-hidden"
-    >
-      <div className="z-10 max-sm:space-y-8">
-        <motion.div
-          className="mb-8 relative group"
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="relative w-[250px] h-[250px] max-sm:w-[200px] max-sm:h-[200px] mx-auto">
-            <Image
-              src="/lakshya_pic.jpeg"
-              alt="Lakshya Verma"
-              decoding="async"
-              fill
-              sizes="(max-width: 640px) 200px, 250px"
-              priority
-              className="rounded-full object-cover shadow-lg shadow-[#60a5fa]/50 group-hover:shadow-[#60a5fa]/80 transition-all duration-300 force-float"
-              onError={() => console.error("Failed to load /lakshya_pic.jpeg")}
-            />
-            <div className="absolute inset-0 rounded-full bg-[#60a5fa]/10 opacity-50" />
-          </div>
+    <section className="min-h-screen flex flex-col justify-center px-6 pt-24 pb-12 relative max-w-4xl mx-auto">
+      <motion.div 
+        className="flex flex-col md:flex-row items-start md:items-center gap-12"
+        variants={container}
+        initial="hidden"
+        animate="show"
+      >
+        {/* Text Content */}
+        <div className="flex-1">
+          <motion.div variants={item} className="mb-8">
+            <span className="availability-badge">
+              <span className="dot" />
+              Open to opportunities
+            </span>
+          </motion.div>
+
+          <motion.h1 variants={item} className="section-heading mb-6 leading-tight">
+            <span className="gradient-text">Lakshya Verma.</span> <br />
+            <span className="text-zinc-500 font-medium">Full Stack Engineer</span>
+          </motion.h1>
+
+          <motion.p variants={item} className="text-zinc-400 text-lg max-w-lg mb-10 leading-relaxed font-mono text-sm tracking-tight">
+            Building scalable web applications with React, Node.js, and modern cloud infrastructure. 
+            Prioritizing strict type safety, clean architecture, and uncompromised performance.
+          </motion.p>
+
+          <motion.div variants={item} className="flex flex-wrap items-center gap-4">
+            <a href="#projects" className="btn-primary">
+              View Work
+            </a>
+            <a href="#contact" className="btn-secondary">
+              Contact
+            </a>
+          </motion.div>
+        </div>
+
+        {/* Profile Image - Refined Minimalist with Color */}
+        <motion.div variants={item} className="relative w-32 h-32 md:w-48 md:h-48 flex-shrink-0 group">
+          {/* Subtle Indigo Glow */}
+          <div className="absolute -inset-4 bg-indigo-500/20 rounded-full blur-2xl opacity-50 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none" />
+          <Image
+            src="/lakshya_pic.jpeg"
+            alt="Lakshya Verma"
+            fill
+            sizes="(max-width: 768px) 128px, 192px"
+            priority
+            className="object-cover rounded-2xl border border-white/10 shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 relative z-10"
+          />
         </motion.div>
-        <motion.div
-          className="relative"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          <div className="absolute inset-0 -top-4 -z-10 bg-[#60a5fa]/10 filter blur-[60px] animate-hum" />
-          <h1 className="text-5xl max-sm:text-4xl md:text-7xl font-bold mb-4 star-wars-title">
-            LAKSHYA VERMA
-          </h1>
-        </motion.div>
-        <motion.p
-          className="text-xl max-sm:text-lg md:text-2xl mb-8 text-[#60a5fa]"
-          style={{ fontFamily: "Star Jedi" }}
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-        >
-          Galactic Architect of Software Solutions
-        </motion.p>
-        <motion.div
-          className="flex max-sm:space-x-4 space-x-8 justify-center flex-wrap"
-          style={{ fontFamily: "Star Jedi" }}
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-        >
-          <motion.a
-            href="#contact"
-            className="px-6 py-2.5 text-white font-medium bg-black/20 border border-[#3B82F6]/50 rounded-full lightsaber-btn shadow-lg shadow-[#3B82F6]/30"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Contact Me
-          </motion.a>
-          <motion.a
-            href="https://github.com/LakshyaVerma123kl"
-            target="_blank"
-            className="px-6 py-2.5 text-white font-medium bg-black/20 border border-[#3B82F6]/50 rounded-full lightsaber-btn shadow-lg shadow-[#3B82F6]/30"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            GitHub
-          </motion.a>
-          <motion.a
-            href="https://www.linkedin.com/in/lakshya-verma-123kl"
-            target="_blank"
-            className="px-6 py-2.5 text-white font-medium bg-black/20 border max-sm:mt-4 border-[#3B82F6]/50 rounded-full lightsaber-btn shadow-lg shadow-[#3B82F6]/30"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            LinkedIn
-          </motion.a>
-        </motion.div>
-      </div>
-    </motion.section>
+      </motion.div>
+    </section>
   );
 }

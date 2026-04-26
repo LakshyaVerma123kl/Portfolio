@@ -1,151 +1,105 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [isSending, setIsSending] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
-  const [isSending, setIsSending] = useState<boolean>(false);
-  const [showPopup, setShowPopup] = useState<boolean>(false);
-  const [popupMessage, setPopupMessage] = useState("");
-  const [popupError, setPopupError] = useState<boolean>(false);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSending(true);
-
     try {
       const response = await fetch("/api/mail", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       const result = await response.json();
-
       if (response.ok && result.success) {
-        setPopupMessage("Transmission Sent Successfully!");
-        setPopupError(false);
+        setToast({ message: "Message sent successfully.", type: "success" });
+        setFormData({ name: "", email: "", message: "" });
       } else {
-        setPopupMessage(result.message || "Failed to send transmission.");
-        setPopupError(true);
+        setToast({ message: result.message || "Failed to send.", type: "error" });
       }
-
-      setShowPopup(true);
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      if (error instanceof Error) {
-        setPopupMessage(`An error occurred: ${error.message}`);
-      } else {
-        setPopupMessage("An unknown error occurred.");
-      }
-      setPopupError(true);
-      setShowPopup(true);
+    } catch {
+      setToast({ message: "Something went wrong.", type: "error" });
     } finally {
       setIsSending(false);
+      setTimeout(() => setToast(null), 5000);
     }
   };
 
   return (
-    <section id="contact" className="py-20">
-      <h2 className="text-4xl font-bold mb-8 text-center star-wars-title">
-        Send a Transmission
-      </h2>
-      <motion.form
-        onSubmit={handleSubmit}
-        className="max-w-lg mx-auto"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium mb-2">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full px-3 py-2 text-white bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium mb-2">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-3 py-2 text-white bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="message" className="block text-sm font-medium mb-2">
-            Message
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            rows={4}
-            className="w-full px-3 py-2 text-white bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            required
-          ></textarea>
-        </div>
-        <motion.button
-          type="submit"
-          style={{ fontFamily: "Star Jedi" }}
-          className="w-full py-2.5 text-white font-medium bg-black/20 border border-[#3B82F6]/50 rounded-xl lightsaber-btn shadow-lg shadow-[#3B82F6]/30"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          disabled={isSending}
-        >
-          {isSending ? "Sending..." : "Send Transmission"}
-        </motion.button>
-      </motion.form>
-      <AnimatePresence>
-        {showPopup && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3 }}
-            style={{ fontFamily: "Star Jedi" }}
-            className={`fixed top-10 left-3 transform p-4 rounded-lg shadow-2xl ${
-              popupError ? "shadow-red-400" : "shadow-yellow-400"
-            } text-white text-lg z-50`}
-          >
-            {popupMessage}
-            <button
-              onClick={() => setShowPopup(false)}
-              className="block mt-3 text-sm text-red-500 underline"
+    <section id="contact" className="py-12 px-6 max-w-4xl mx-auto">
+      <div className="mb-12">
+        <h2 className="text-xl font-bold tracking-tight text-zinc-50 mb-2">Contact.</h2>
+        <p className="text-zinc-500 font-mono text-sm">Let&apos;s build something</p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-12">
+        <div>
+          <p className="text-zinc-400 text-sm leading-relaxed mb-8">
+            I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+          </p>
+
+          <div className="space-y-4">
+            <a
+              href="mailto:lakshya123kl@gmail.com"
+              className="block text-sm font-medium text-zinc-50 hover:text-zinc-300 transition-colors"
             >
-              Close
+              lakshya123kl@gmail.com
+            </a>
+            <a
+              href="https://github.com/LakshyaVerma123kl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-sm font-medium text-zinc-50 hover:text-zinc-300 transition-colors"
+            >
+              GitHub ↗
+            </a>
+            <a
+              href="https://www.linkedin.com/in/lakshya-verma-123kl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-sm font-medium text-zinc-50 hover:text-zinc-300 transition-colors"
+            >
+              LinkedIn ↗
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <form onSubmit={handleSubmit} className="space-y-4 bg-white/5 p-6 rounded-2xl border border-white/5">
+            <div>
+              <label htmlFor="name" className="form-label">Name</label>
+              <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} className="form-input" required />
+            </div>
+            <div>
+              <label htmlFor="email" className="form-label">Email</label>
+              <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} className="form-input" required />
+            </div>
+            <div>
+              <label htmlFor="message" className="form-label">Message</label>
+              <textarea id="message" name="message" value={formData.message} onChange={handleChange} rows={4} className="form-input resize-none" required />
+            </div>
+            <button type="submit" className="btn-primary w-full justify-center mt-2" disabled={isSending}>
+              {isSending ? "Sending..." : "Send Message"}
             </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </form>
+        </div>
+      </div>
+
+      {toast && (
+        <div className={`toast ${toast.type === "success" ? "toast-success" : "toast-error"}`}>
+          {toast.message}
+        </div>
+      )}
     </section>
   );
 }

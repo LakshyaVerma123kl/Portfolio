@@ -1,119 +1,73 @@
 "use client";
 
-import { motion } from "framer-motion";
+const experience = [
+  {
+    role: "Full Stack Developer Intern",
+    company: "Quazar",
+    period: "Sep 2025 — Jan 2026",
+    location: "Remote",
+    tech: "React.js, Node.js",
+    description: [
+      "Designed and developed new features for interactive learning platforms.",
+      "Collaborated in brainstorming and technical discussions to shape product direction.",
+      "Worked closely with the team on end-to-end feature delivery and code reviews.",
+    ],
+  },
+  {
+    role: "Full Stack Developer Intern",
+    company: "Cantilever",
+    period: "Sep 2024 — Oct 2024",
+    location: "Remote",
+    tech: "React, Node.js, MongoDB",
+    description: [
+      "Built and optimized e-commerce and news websites with responsive React UIs.",
+      "Developed RESTful APIs for seamless frontend-backend communication.",
+      "Created efficient database schemas with MongoDB for optimized performance.",
+      "Implemented end-to-end features from design to deployment.",
+    ],
+  },
+];
 
 export default function Experience() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
+  return (
+    <section id="experience" className="py-12 px-6 max-w-4xl mx-auto">
+      <div className="mb-12">
+        <h2 className="text-xl font-bold tracking-tight text-zinc-50 mb-2">Experience.</h2>
+        <p className="text-zinc-500 font-mono text-sm">Career history</p>
+      </div>
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
+      <div className="space-y-12">
+        {experience.map((exp, index) => (
+          <div key={index} className="grid md:grid-cols-[1fr_3fr] gap-4 md:gap-8 group">
+            {/* Timeline Meta */}
+            <div className="text-sm">
+              <p className="text-zinc-50 font-medium mb-1">{exp.period}</p>
+              <p className="text-zinc-500 font-mono text-xs uppercase tracking-wider">{exp.company}</p>
+              <p className="text-zinc-600 font-mono text-xs mt-1">{exp.location}</p>
+            </div>
 
-  // Debug logs
+            {/* Content */}
+            <div className="pb-12 border-b border-white/5 group-last:border-none group-last:pb-0">
+              <h3 className="text-lg font-medium text-zinc-50 mb-4">{exp.role}</h3>
+              
+              <ul className="space-y-3 mb-6">
+                {exp.description.map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-zinc-400 text-sm leading-relaxed">
+                    <span className="w-1.5 h-1.5 bg-zinc-700 mt-1.5 flex-shrink-0 rounded-full" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
 
-  try {
-    return (
-      <section
-        id="experience"
-        className="py-16 px-4 bg-transparent relative z-10"
-      >
-        <div className="max-w-5xl mx-auto">
-          <motion.h2
-            className="text-4xl font-bold mb-12 text-center star-wars-title"
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Experience and Certification Matrix
-          </motion.h2>
-
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Professional Summary */}
-            <motion.div
-              className="col-span-1 md:col-span-2"
-              variants={itemVariants}
-            >
-              <div className="bg-[#1F2937]/80 rounded-lg p-6 border border-blue-500/20 shadow-md shadow-blue-500/10 hover:shadow-blue-500/30 transition-all duration-300 force-float">
-                <h3 className="text-2xl font-bold mb-4 star-wars-title">
-                  Professional Summary
-                </h3>
-                <p className="text-gray-300 text-base">
-                  Hardworking and motivated college student proficient in
-                  JavaScript, TypeScript, Java, C++, MongoDB, PostgreSQL, and
-                  ReactJS. Skilled in user interface design, testing, and
-                  debugging processes. Experienced in building responsive
-                  e-commerce and wellness applications with a focus on secure,
-                  scalable solutions. Adept at leveraging Docker, Git, and cloud
-                  platforms (Netlify/Vercel) to enhance development efficiency.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Experience Highlights */}
-            <motion.div variants={itemVariants}>
-              <h3 className="text-2xl font-bold mb-4 star-wars-title">
-                Experience Highlights
-              </h3>
-              <div className="space-y-6">
-                <div className="bg-[#1F2937]/80 rounded-lg p-5 border border-blue-500/20 shadow-md shadow-blue-500/10 hover:shadow-blue-500/30 transition-all duration-300 force-float">
-                  <h4 className="font-semibold text-xl mb-2 text-white">
-                    Cantilever | Full Stack Intern
-                  </h4>
-                  <p className="text-gray-300 text-sm mb-2">
-                    Remote | Sep 2024 - Oct 2024
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-gray-300">
-                    <li>Built and optimized e-commerce and news websites</li>
-                    <li>Developed responsive user interfaces with React</li>
-                    <li>Created RESTful APIs using Node.js and MongoDB</li>
-                    <li>Implemented efficient database management</li>
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Certifications */}
-            <motion.div
-              className="col-span-1 md:col-span-2"
-              variants={itemVariants}
-            >
-              <h3 className="text-2xl font-bold mb-4 star-wars-title">
-                Certifications & Achievements
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {[
-                  "IBM Certification For Full Stack Development",
-                  "VIHAAN 007 Hackathon - IEEE Delhi Technical University",
-                ].map((cert, index) => (
-                  <div
-                    key={index}
-                    className="bg-[#1F2937]/80 rounded-lg p-4 border border-blue-500/20 shadow-md shadow-blue-500/10 hover:shadow-blue-500/30 transition-all duration-300 force-float"
-                  >
-                    <p className="text-sm text-gray-300">{cert}</p>
-                  </div>
+              <div className="flex flex-wrap gap-2">
+                {exp.tech.split(", ").map((t) => (
+                  <span key={t} className="tech-pill text-xs">{t}</span>
                 ))}
               </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-    );
-  } catch (error) {
-    console.error("Error rendering Experience component:", error);
-    return <div>Error loading Experience section</div>;
-  }
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 }
