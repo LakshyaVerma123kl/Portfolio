@@ -1,9 +1,33 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
 export default function Hero() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = (e.clientX - rect.left) / width - 0.5;
+    const mouseY = (e.clientY - rect.top) / height - 0.5;
+    x.set(mouseX);
+    y.set(mouseY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -25,7 +49,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="min-h-screen flex flex-col justify-center px-6 pt-24 pb-12 relative max-w-4xl mx-auto">
+    <section className="min-h-screen flex flex-col justify-center px-6 pt-24 pb-12 relative max-w-4xl mx-auto" style={{ perspective: 1000 }}>
       <motion.div 
         className="flex flex-col md:flex-row items-start md:items-center gap-12"
         variants={container}
@@ -61,10 +85,16 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Profile Image - Refined Minimalist with Color */}
-        <motion.div variants={item} className="relative w-32 h-32 md:w-48 md:h-48 flex-shrink-0 group">
+        {/* Profile Image - 3D Magnetic */}
+        <motion.div 
+          variants={item} 
+          className="relative w-32 h-32 md:w-48 md:h-48 flex-shrink-0 group"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        >
           {/* Subtle Indigo Glow */}
-          <div className="absolute -inset-4 bg-indigo-500/20 rounded-full blur-2xl opacity-50 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none" />
+          <div className="absolute -inset-4 bg-indigo-500/20 rounded-full blur-2xl opacity-50 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none" style={{ transform: "translateZ(-20px)" }} />
           <Image
             src="/lakshya_pic.jpeg"
             alt="Lakshya Verma"
@@ -72,6 +102,7 @@ export default function Hero() {
             sizes="(max-width: 768px) 128px, 192px"
             priority
             className="object-cover rounded-2xl border border-white/10 shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 relative z-10"
+            style={{ transform: "translateZ(30px)" }}
           />
         </motion.div>
       </motion.div>

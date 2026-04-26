@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, MouseEvent } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
 interface GitHubRepo {
   name: string;
@@ -20,6 +20,106 @@ interface Project {
   stars: number;
   forks: number;
   featured?: boolean;
+}
+
+// 3D Project Card Component
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Spring physics for smooth 3D tilting
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
+
+  // Map mouse position to rotation angles (subtle tilt)
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
+
+  const handleMouseMove = (e: MouseEvent<HTMLAnchorElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    
+    // Spotlight logic
+    const clientX = e.clientX - rect.left;
+    const clientY = e.clientY - rect.top;
+    e.currentTarget.style.setProperty("--mouse-x", `${clientX}px`);
+    e.currentTarget.style.setProperty("--mouse-y", `${clientY}px`);
+
+    // 3D Tilt logic (normalized from -0.5 to 0.5)
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = (e.clientX - rect.left) / width - 0.5;
+    const mouseY = (e.clientY - rect.top) / height - 0.5;
+    x.set(mouseX);
+    y.set(mouseY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.a
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      href={project.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`spotlight-card group relative bg-[#0c0c0e] border border-white/5 rounded-2xl p-6 sm:p-8 transition-colors duration-500 hover:border-indigo-500/30 ${
+        project.featured ? "md:col-span-2" : ""
+      }`}
+    >
+      {/* Spotlight Overlay */}
+      <div 
+        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100 z-0"
+        style={{
+          background: `radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(129, 140, 248, 0.15), transparent 40%)`
+        }}
+      />
+      
+      {/* 3D Content Wrapper */}
+      <div className="relative z-10 flex flex-col h-full" style={{ transform: "translateZ(30px)" }}>
+        <div className="flex justify-between items-start mb-4">
+          <h3 className="text-zinc-50 font-medium group-hover:text-indigo-400 transition-colors duration-300">
+            {project.title}
+          </h3>
+          <svg
+            className="w-4 h-4 text-zinc-600 group-hover:text-indigo-400 transition-all duration-300 transform group-hover:-translate-y-1 group-hover:translate-x-1"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 17L17 7M17 7H7M17 7v10" />
+          </svg>
+        </div>
+
+        <p className="text-zinc-400 text-sm leading-relaxed mb-6" style={{ transform: "translateZ(20px)" }}>
+          {project.description}
+        </p>
+
+        <div className="flex flex-wrap items-center justify-between gap-4 mt-auto pt-4 border-t border-white/5" style={{ transform: "translateZ(10px)" }}>
+          <div className="flex flex-wrap gap-2">
+            {project.technologies.map((tech, ti) => (
+              <span key={ti} className="tech-pill">
+                {tech}
+              </span>
+            ))}
+          </div>
+          <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono">
+            {project.stars > 0 && <span>★ {project.stars}</span>}
+            {project.forks > 0 && <span>⑂ {project.forks}</span>}
+          </div>
+        </div>
+      </div>
+    </motion.a>
+  );
 }
 
 export default function Projects() {
@@ -122,20 +222,8 @@ export default function Projects() {
     fetchGitHubProjects();
   }, [fetchGitHubProjects]);
 
-  // Vercel-style Mouse Spotlight Effect
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    const cards = document.querySelectorAll(".spotlight-card");
-    cards.forEach((card) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      (card as HTMLElement).style.setProperty("--mouse-x", `${x}px`);
-      (card as HTMLElement).style.setProperty("--mouse-y", `${y}px`);
-    });
-  };
-
   return (
-    <section id="projects" className="py-12 px-6 max-w-4xl mx-auto">
+    <section id="projects" className="py-12 px-6 max-w-4xl mx-auto" style={{ perspective: 1200 }}>
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -159,64 +247,9 @@ export default function Projects() {
       {loading ? (
         <div className="py-20 text-zinc-500 font-mono text-sm">Loading projects...</div>
       ) : (
-        <div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-          onMouseMove={handleMouseMove}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project, i) => (
-            <motion.a
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: i * 0.1 }}
-              key={i}
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`spotlight-card group relative bg-[#0c0c0e] border border-white/5 rounded-2xl p-6 sm:p-8 overflow-hidden transition-all duration-500 hover:-translate-y-1 ${
-                project.featured ? "md:col-span-2" : ""
-              }`}
-            >
-              {/* Spotlight Overlay */}
-              <div 
-                className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
-                style={{
-                  background: `radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(129, 140, 248, 0.1), transparent 40%)`
-                }}
-              />
-              
-              <div className="relative z-10 flex flex-col h-full">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-zinc-50 font-medium group-hover:text-indigo-400 transition-colors duration-300">
-                    {project.title}
-                  </h3>
-                  <svg
-                    className="w-4 h-4 text-zinc-600 group-hover:text-indigo-400 transition-all duration-300 transform group-hover:-translate-y-1 group-hover:translate-x-1"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 17L17 7M17 7H7M17 7v10" />
-                  </svg>
-                </div>
-
-                <p className="text-zinc-400 text-sm leading-relaxed mb-6">
-                  {project.description}
-                </p>
-
-                <div className="flex flex-wrap items-center justify-between gap-4 mt-auto pt-4 border-t border-white/5">
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech, ti) => (
-                      <span key={ti} className="tech-pill">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono">
-                    {project.stars > 0 && <span>★ {project.stars}</span>}
-                    {project.forks > 0 && <span>⑂ {project.forks}</span>}
-                  </div>
-                </div>
-              </div>
-            </motion.a>
+            <ProjectCard key={i} project={project} index={i} />
           ))}
         </div>
       )}
